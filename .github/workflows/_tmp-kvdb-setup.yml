@@ -12,26 +12,8 @@ jobs:
     steps:
       - name: Create bucket
         run: |
-          echo "--- POST https://kvdb.io/ with email body ---"
-          curl -sS -i -X POST "https://kvdb.io/" -d "email=connections.boardgames.app@gmail.com" | tee /tmp/create.txt
-          echo ""
-          echo "--- POST https://kvdb.io/ with email query (JSON body) ---"
-          curl -sS -i -X POST "https://kvdb.io/" -H "Content-Type: application/json" -d '{"email":"connections.boardgames.app@gmail.com"}' | tee /tmp/create2.txt
+          echo "--- POST https://kvdb.io/ with real owner email ---"
+          curl -sS -i -X POST "https://kvdb.io/" -d "email=ariel27598@gmail.com" | tee /tmp/create.txt
           echo ""
           BUCKET=$(tail -n1 /tmp/create.txt | tr -d '\r\n')
-          if [ -z "$BUCKET" ]; then BUCKET=$(tail -n1 /tmp/create2.txt | tr -d '\r\n'); fi
           echo "BUCKET_ID=[$BUCKET]"
-          case "$BUCKET" in
-            *" "*|"") echo "Bucket id looks invalid, skipping further calls"; exit 0 ;;
-          esac
-          echo "--- PUT test key ---"
-          curl -sS -i -X PUT "https://kvdb.io/$BUCKET/test-key" -d 'hello world' | tee /tmp/put.txt
-          echo ""
-          echo "--- GET test key ---"
-          curl -sS -i "https://kvdb.io/$BUCKET/test-key" | tee /tmp/get.txt
-          echo ""
-          echo "--- GET nonexistent key (expect 404) ---"
-          curl -sS -i "https://kvdb.io/$BUCKET/does-not-exist" | tee /tmp/get404.txt
-          echo ""
-          echo "--- OPTIONS (CORS check) ---"
-          curl -sS -i -X OPTIONS "https://kvdb.io/$BUCKET/test-key" -H "Origin: https://ariel27598-design.github.io" -H "Access-Control-Request-Method: PUT" | tee /tmp/cors.txt

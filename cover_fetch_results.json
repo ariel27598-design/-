@@ -1,6 +1,167 @@
 {
   "catan": {
+    "ok": true,
+    "title": "Catan",
+    "resolved_title": "Catan",
+    "ext": "jpg",
+    "bytes": 122105
+  },
+  "carcassonne": {
+    "ok": true,
+    "title": "Carcassonne (board game)",
+    "resolved_title": "Carcassonne (board game)",
+    "ext": "jpg",
+    "bytes": 168100
+  },
+  "dixit": {
+    "ok": true,
+    "title": "Dixit (card game)",
+    "resolved_title": "Dixit (board game)",
+    "ext": "jpg",
+    "bytes": 28494
+  },
+  "codenames": {
+    "ok": true,
+    "title": "Codenames (board game)",
+    "resolved_title": "Codenames (board game)",
+    "ext": "jpg",
+    "bytes": 1379184
+  },
+  "ticket-to-ride": {
+    "ok": true,
+    "title": "Ticket to Ride (board game)",
+    "resolved_title": "Ticket to Ride (board game)",
+    "ext": "jpg",
+    "bytes": 33573
+  },
+  "splendor": {
+    "ok": true,
+    "title": "Splendor (game)",
+    "resolved_title": "Splendor (game)",
+    "ext": "jpg",
+    "bytes": 20854
+  },
+  "azul": {
+    "ok": true,
+    "title": "Azul (board game)",
+    "resolved_title": "Azul (board game)",
+    "ext": "jpg",
+    "bytes": 38651
+  },
+  "pandemic": {
+    "ok": true,
+    "title": "Pandemic (board game)",
+    "resolved_title": "Pandemic (board game)",
+    "ext": "jpg",
+    "bytes": 126677
+  },
+  "7-wonders": {
     "ok": false,
-    "reason": "HTTP Error 401: Unauthorized"
+    "reason": "HTTP Error 429: Too many requests (76af2b0)",
+    "title": "7 Wonders (board game)"
+  },
+  "uno": {
+    "ok": false,
+    "reason": "HTTP Error 429: Too many requests (76af2b0)",
+    "title": "Uno (card game)"
+  },
+  "taboo": {
+    "ok": false,
+    "reason": "HTTP Error 429: Too Many Requests",
+    "title": "Taboo (game)"
+  },
+  "dobble": {
+    "ok": false,
+    "reason": "HTTP Error 429: Too Many Requests",
+    "title": "Spot It!"
+  },
+  "werewolf": {
+    "ok": false,
+    "reason": "HTTP Error 429: Too Many Requests",
+    "title": "One Night Ultimate Werewolf"
+  },
+  "monopoly": {
+    "ok": false,
+    "reason": "HTTP Error 429: Too Many Requests",
+    "title": "Monopoly (game)"
+  },
+  "bang": {
+    "ok": false,
+    "reason": "HTTP Error 429: Too Many Requests",
+    "title": "Bang! (card game)"
+  },
+  "just-one": {
+    "ok": false,
+    "reason": "HTTP Error 429: Too Many Requests",
+    "title": "Just One (game)"
+  },
+  "avalon": {
+    "ok": false,
+    "reason": "HTTP Error 429: Too Many Requests",
+    "title": "The Resistance: Avalon"
+  },
+  "wingspan": {
+    "ok": false,
+    "reason": "HTTP Error 429: Too Many Requests",
+    "title": "Wingspan (board game)"
+  },
+  "terraforming-mars": {
+    "ok": false,
+    "reason": "HTTP Error 429: Too Many Requests",
+    "title": "Terraforming Mars (board game)"
+  },
+  "love-letter": {
+    "ok": false,
+    "reason": "HTTP Error 429: Too Many Requests",
+    "title": "Love Letter (card game)"
+  },
+  "forbidden-island": {
+    "ok": false,
+    "reason": "HTTP Error 429: Too Many Requests",
+    "title": "Forbidden Island (board game)"
+  },
+  "alcatraz": {
+    "ok": false,
+    "reason": "HTTP Error 429: Too Many Requests",
+    "title": "Alcatraz: The Scapegoat"
+  },
+  "exploding-kittens": {
+    "ok": false,
+    "reason": "HTTP Error 429: Too Many Requests",
+    "title": "Exploding Kittens"
+  },
+  "colored-tumble-tower": {
+    "ok": false,
+    "reason": "HTTP Error 429: Too Many Requests",
+    "title": "Jenga"
+  },
+  "alias-israel": {
+    "ok": false,
+    "reason": "HTTP Error 429: Too Many Requests",
+    "title": "Alias (party game)"
+  },
+  "african-mancala": {
+    "ok": true,
+    "title": "Mancala",
+    "resolved_title": "Mancala",
+    "ext": "jpg",
+    "bytes": 2651549
+  },
+  "davinci-code": {
+    "ok": false,
+    "reason": "HTTP Error 429: Too Many Requests",
+    "title": "Da Vinci Code (game)"
+  },
+  "super-taki": {
+    "ok": true,
+    "title": "Uno (card game)",
+    "resolved_title": "Uno (card game)",
+    "ext": "png",
+    "bytes": 120978
+  },
+  "texas-holdem-poker": {
+    "ok": false,
+    "reason": "HTTP Error 429: Too Many Requests",
+    "title": "Texas hold 'em"
   }
 }

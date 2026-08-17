@@ -1,0 +1,30 @@
+name: (temp) kvdb.io bucket setup
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/boardgame-barcode-scanner-9zh92l]
+    paths:
+      - '.github/workflows/_tmp-kvdb-setup.yml'
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create bucket
+        run: |
+          echo "--- POST https://kvdb.io/ ---"
+          curl -sS -i -X POST https://kvdb.io/ | tee /tmp/create.txt
+          echo ""
+          BUCKET=$(tail -n1 /tmp/create.txt | tr -d '\r\n')
+          echo "BUCKET_ID=$BUCKET"
+          echo "--- PUT test key ---"
+          curl -sS -i -X PUT "https://kvdb.io/$BUCKET/test-key" -d 'hello world' | tee /tmp/put.txt
+          echo ""
+          echo "--- GET test key ---"
+          curl -sS -i "https://kvdb.io/$BUCKET/test-key" | tee /tmp/get.txt
+          echo ""
+          echo "--- GET nonexistent key (expect 404) ---"
+          curl -sS -i "https://kvdb.io/$BUCKET/does-not-exist" | tee /tmp/get404.txt
+          echo ""
+          echo "--- OPTIONS (CORS check) ---"
+          curl -sS -i -X OPTIONS "https://kvdb.io/$BUCKET/test-key" -H "Origin: https://ariel27598-design.github.io" -H "Access-Control-Request-Method: PUT" | tee /tmp/cors.txt

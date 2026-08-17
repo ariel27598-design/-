@@ -25,14 +25,6 @@ jobs:
           import urllib.request
 
           GAMES = [
-              ("catan", "Catan"),
-              ("carcassonne", "Carcassonne (board game)"),
-              ("dixit", "Dixit (card game)"),
-              ("codenames", "Codenames (board game)"),
-              ("ticket-to-ride", "Ticket to Ride (board game)"),
-              ("splendor", "Splendor (game)"),
-              ("azul", "Azul (board game)"),
-              ("pandemic", "Pandemic (board game)"),
               ("7-wonders", "7 Wonders (board game)"),
               ("uno", "Uno (card game)"),
               ("taboo", "Taboo (game)"),
@@ -50,9 +42,7 @@ jobs:
               ("exploding-kittens", "Exploding Kittens"),
               ("colored-tumble-tower", "Jenga"),
               ("alias-israel", "Alias (party game)"),
-              ("african-mancala", "Mancala"),
               ("davinci-code", "Da Vinci Code (game)"),
-              ("super-taki", "Uno (card game)"),
               ("texas-holdem-poker", "Texas hold 'em"),
           ]
 
@@ -72,13 +62,13 @@ jobs:
 
                   if info.get("type") != "standard":
                       results[game_id] = {"ok": False, "reason": f"type={info.get('type')}", "title": title}
-                      time.sleep(0.5)
+                      time.sleep(2.5)
                       continue
 
                   thumb = info.get("originalimage") or info.get("thumbnail")
                   if not thumb or not thumb.get("source"):
                       results[game_id] = {"ok": False, "reason": "no image", "title": title}
-                      time.sleep(0.5)
+                      time.sleep(2.5)
                       continue
 
                   image_url = thumb["source"]
@@ -88,7 +78,7 @@ jobs:
                       ext = m.group(1).lower()
                   if ext == "svg":
                       results[game_id] = {"ok": False, "reason": "svg image (skipped)", "title": title}
-                      time.sleep(0.5)
+                      time.sleep(2.5)
                       continue
 
                   img_bytes = fetch(image_url)
@@ -104,7 +94,7 @@ jobs:
                   }
               except Exception as e:
                   results[game_id] = {"ok": False, "reason": str(e), "title": title}
-              time.sleep(0.5)
+              time.sleep(2.5)
 
           print(json.dumps(results, indent=2, ensure_ascii=False))
           with open("cover_fetch_results.json", "w") as f:

@@ -3,8 +3,11 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useGameStore } from '../store/useGameStore';
 import { ALL_CATEGORIES, type Category, type NewGame } from '../types';
 import { placeholderCover } from '../lib/placeholder';
+import { lookupProductByBarcode } from '../lib/barcodeLookup';
 import { useT } from '../i18n/useT';
 import CategoryPill from '../components/CategoryPill';
+
+type LookupStatus = 'idle' | 'loading' | 'found' | 'not-found';
 
 interface Props {
   mode: 'create' | 'edit';
@@ -53,6 +56,7 @@ export default function GameForm({ mode }: Props) {
   const [form, setForm] = useState<NewGame>(buildFormFromExisting);
   const [barcodeInput, setBarcodeInput] = useState('');
   const [imagePreview, setImagePreview] = useState(existing?.imageUrl ?? '');
+  const [lookupStatus, setLookupStatus] = useState<LookupStatus>('idle');
 
   useEffect(() => {
     if (existing) {
@@ -61,6 +65,32 @@ export default function GameForm({ mode }: Props) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [existing?.id]);
+
+  async function lookupBarcode(code: string) {
+    if (!code) return;
+    setLookupStatus('loading');
+    const result = await lookupProductByBarcode(code);
+    if (!result) {
+      setLookupStatus('not-found');
+      return;
+    }
+    setForm((f) => ({
+      ...f,
+      name: typeof f.name === 'string' && f.name ? f.name : result.name ?? f.name,
+      imageUrl: f.imageUrl || result.imageUrl || f.imageUrl,
+    }));
+    if (result.imageUrl && !form.imageUrl) setImagePreview(result.imageUrl);
+    setLookupStatus('found');
+  }
+
+  // Auto-lookup once when arriving from a barcode scan with an empty form.
+  useEffect(() => {
+    const prefillBarcode = searchParams.get('barcode');
+    if (mode === 'create' && prefillBarcode) {
+      lookupBarcode(prefillBarcode);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (mode === 'edit' && !existing) {
     return (
@@ -235,6 +265,17 @@ export default function GameForm({ mode }: Props) {
               ))}
             </div>
           )}
+          <button
+            type="button"
+            onClick={() => lookupBarcode(barcodeInput.trim() || form.barcodes[0])}
+            disabled={lookupStatus === 'loading' || (!barcodeInput.trim() && form.barcodes.length === 0)}
+            className="mt-1 self-start text-xs font-semibold text-indigo-300 hover:text-indigo-200 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            {t('lookupBarcodeBtn')}
+          </button>
+          {lookupStatus === 'loading' && <p className="text-xs text-slate-400">{t('lookingUpProduct')}</p>}
+          {lookupStatus === 'found' && <p className="text-xs text-emerald-300">{t('productFoundHint')}</p>}
+          {lookupStatus === 'not-found' && <p className="text-xs text-amber-300">{t('productNotFoundHint')}</p>}
         </Field>
 
         <Field label="">

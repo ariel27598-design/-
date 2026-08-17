@@ -178,6 +178,13 @@ export const dict = {
   barcodesFieldLabel: { he: 'ברקודים', en: 'Barcodes' },
   barcodePlaceholder: { he: 'הזינו ברקוד והוסיפו', en: 'Enter a barcode and add' },
   addBarcodeBtn: { he: 'הוספה', en: 'Add' },
+  lookupBarcodeBtn: { he: '🔍 חיפוש פרטים לפי ברקוד', en: '🔍 Look up by barcode' },
+  lookingUpProduct: { he: 'מחפש פרטי מוצר לפי הברקוד...', en: 'Looking up product by barcode...' },
+  productFoundHint: { he: '✓ מולאו פרטים אוטומטית מהברקוד - בדקו ותקנו במידת הצורך', en: '✓ Filled in automatically from the barcode - check and adjust as needed' },
+  productNotFoundHint: {
+    he: 'לא נמצא מידע על המוצר במאגר (נפוץ אצל מהדורות מקומיות/ישראליות). מלאו ידנית.',
+    en: 'No product info found in the database (common for local/regional editions). Fill in manually.',
+  },
   onShelfCheckbox: { he: 'המשחק נמצא איתי פיזית על המדף', en: 'The game is physically here, on the shelf' },
   gameplayAttributes: { he: 'מאפייני שיחוק (למנוע ההתאמה)', en: 'Gameplay attributes (for matching)' },
   minPlayersLabel: { he: "שחקנים (מינ')", en: 'Players (min)' },

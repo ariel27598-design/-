@@ -5,13 +5,17 @@ function ytSearch(query: string): string {
   return `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
 }
 
+export type SeedGame = NewGame & { id: string };
+
 /**
  * Seed library. Barcodes are internal catalog identifiers used to demo the
  * scanner flow — scanning matches against this in-app library, not an
- * external product database.
+ * external product database. IDs are fixed (not random) so that shared
+ * library links resolve to the same games on every device.
  */
-export const SEED_GAMES: NewGame[] = [
+export const SEED_GAMES: SeedGame[] = [
   {
+    id: 'catan',
     name: { he: 'קטאן', en: 'Catan' },
     barcodes: ['7290000000011'],
     imageUrl: placeholderCover('קטאן'),
@@ -32,6 +36,7 @@ export const SEED_GAMES: NewGame[] = [
     owned: true,
   },
   {
+    id: 'carcassonne',
     name: { he: 'קרקסון', en: 'Carcassonne' },
     barcodes: ['7290000000028'],
     imageUrl: placeholderCover('קרקסון'),
@@ -52,6 +57,7 @@ export const SEED_GAMES: NewGame[] = [
     owned: true,
   },
   {
+    id: 'dixit',
     name: { he: 'דיקסיט', en: 'Dixit' },
     barcodes: ['7290000000035'],
     imageUrl: placeholderCover('דיקסיט'),
@@ -72,6 +78,7 @@ export const SEED_GAMES: NewGame[] = [
     owned: true,
   },
   {
+    id: 'codenames',
     name: { he: 'קודניימס', en: 'Codenames' },
     barcodes: ['7290000000042'],
     imageUrl: placeholderCover('קודניימס'),
@@ -92,6 +99,7 @@ export const SEED_GAMES: NewGame[] = [
     owned: true,
   },
   {
+    id: 'ticket-to-ride',
     name: { he: 'רכבות אמריקה', en: 'Ticket to Ride' },
     barcodes: ['7290000000059'],
     imageUrl: placeholderCover('רכבות אמריקה'),
@@ -112,6 +120,7 @@ export const SEED_GAMES: NewGame[] = [
     owned: false,
   },
   {
+    id: 'splendor',
     name: { he: 'ספלנדור', en: 'Splendor' },
     barcodes: ['7290000000066'],
     imageUrl: placeholderCover('ספלנדור'),
@@ -132,6 +141,7 @@ export const SEED_GAMES: NewGame[] = [
     owned: true,
   },
   {
+    id: 'azul',
     name: { he: 'אזול', en: 'Azul' },
     barcodes: ['7290000000073'],
     imageUrl: placeholderCover('אזול'),
@@ -152,6 +162,7 @@ export const SEED_GAMES: NewGame[] = [
     owned: false,
   },
   {
+    id: 'pandemic',
     name: { he: 'מגפה', en: 'Pandemic' },
     barcodes: ['7290000000080'],
     imageUrl: placeholderCover('מגפה'),
@@ -172,6 +183,7 @@ export const SEED_GAMES: NewGame[] = [
     owned: true,
   },
   {
+    id: '7-wonders',
     name: { he: '7 פלאות', en: '7 Wonders' },
     barcodes: ['7290000000097'],
     imageUrl: placeholderCover('7 פלאות'),
@@ -192,6 +204,7 @@ export const SEED_GAMES: NewGame[] = [
     owned: false,
   },
   {
+    id: 'uno',
     name: { he: 'אונו', en: 'Uno' },
     barcodes: ['7290000000103'],
     imageUrl: placeholderCover('אונו'),
@@ -212,6 +225,7 @@ export const SEED_GAMES: NewGame[] = [
     owned: true,
   },
   {
+    id: 'taboo',
     name: { he: 'טאבו', en: 'Taboo' },
     barcodes: ['7290000000110'],
     imageUrl: placeholderCover('טאבו'),
@@ -232,6 +246,7 @@ export const SEED_GAMES: NewGame[] = [
     owned: true,
   },
   {
+    id: 'dobble',
     name: { he: 'דובל', en: 'Dobble (Spot It!)' },
     barcodes: ['7290000000127'],
     imageUrl: placeholderCover('דובל'),
@@ -252,6 +267,7 @@ export const SEED_GAMES: NewGame[] = [
     owned: true,
   },
   {
+    id: 'werewolf',
     name: { he: 'וורוולף', en: 'Werewolf' },
     barcodes: ['7290000000134'],
     imageUrl: placeholderCover('וורוולף'),
@@ -272,6 +288,7 @@ export const SEED_GAMES: NewGame[] = [
     owned: false,
   },
   {
+    id: 'monopoly',
     name: { he: 'מונופול', en: 'Monopoly' },
     barcodes: ['7290000000141'],
     imageUrl: placeholderCover('מונופול'),
@@ -292,6 +309,7 @@ export const SEED_GAMES: NewGame[] = [
     owned: true,
   },
   {
+    id: 'bang',
     name: { he: 'בנג', en: 'Bang!' },
     barcodes: ['7290000000158'],
     imageUrl: placeholderCover('בנג'),
@@ -312,6 +330,7 @@ export const SEED_GAMES: NewGame[] = [
     owned: false,
   },
   {
+    id: 'just-one',
     name: { he: "ג'אסט וואן", en: 'Just One' },
     barcodes: ['7290000000165'],
     imageUrl: placeholderCover("ג'אסט וואן"),
@@ -332,6 +351,7 @@ export const SEED_GAMES: NewGame[] = [
     owned: true,
   },
   {
+    id: 'avalon',
     name: { he: 'אבלון', en: 'Avalon' },
     barcodes: ['7290000000172'],
     imageUrl: placeholderCover('אבלון'),
@@ -352,6 +372,7 @@ export const SEED_GAMES: NewGame[] = [
     owned: false,
   },
   {
+    id: 'wingspan',
     name: { he: 'כנפיים', en: 'Wingspan' },
     barcodes: ['7290000000189'],
     imageUrl: placeholderCover('כנפיים'),
@@ -372,6 +393,7 @@ export const SEED_GAMES: NewGame[] = [
     owned: true,
   },
   {
+    id: 'terraforming-mars',
     name: { he: 'טרהפורמינג מארס', en: 'Terraforming Mars' },
     barcodes: ['7290000000196'],
     imageUrl: placeholderCover('טרהפורמינג מארס'),
@@ -392,6 +414,7 @@ export const SEED_GAMES: NewGame[] = [
     owned: false,
   },
   {
+    id: 'love-letter',
     name: { he: 'לב במרוץ', en: 'Love Letter' },
     barcodes: ['7290000000202'],
     imageUrl: placeholderCover('לב במרוץ'),
@@ -412,6 +435,7 @@ export const SEED_GAMES: NewGame[] = [
     owned: true,
   },
   {
+    id: 'forbidden-island',
     name: { he: 'האי האסור', en: 'Forbidden Island' },
     barcodes: ['7290000000219'],
     imageUrl: placeholderCover('האי האסור'),

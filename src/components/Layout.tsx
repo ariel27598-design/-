@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { useT } from '../i18n/useT';
 import { useLanguageStore } from '../store/useLanguageStore';
+import PuzzleLogo from './PuzzleLogo';
 
 export default function Layout() {
   const { t, lang } = useT();
@@ -10,7 +11,8 @@ export default function Layout() {
   useEffect(() => {
     document.documentElement.lang = lang;
     document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
-  }, [lang]);
+    document.title = t('appName');
+  }, [lang, t]);
 
   const NAV_ITEMS = [
     { to: '/', label: t('navHome'), icon: '🏠', end: true },
@@ -24,7 +26,7 @@ export default function Layout() {
       <header className="sticky top-0 z-30 border-b border-white/10 bg-slate-950/70 backdrop-blur-md">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
           <NavLink to="/" className="flex items-center gap-2 text-lg font-bold tracking-tight">
-            <span className="text-2xl">🎲</span>
+            <PuzzleLogo className="h-7 w-7 shrink-0" />
             <span className="bg-gradient-to-l from-indigo-300 via-fuchsia-300 to-amber-200 bg-clip-text text-transparent">
               {t('appName')}
             </span>

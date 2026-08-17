@@ -1,20 +1,28 @@
 import type { Game, GameMatchResult, MatchReason, QuestionnaireAnswers } from '../types';
 
-/** Score a single answer set against a single game. Returns 0-100 plus reason keys. */
-export function scoreGame(
-  game: Game,
-  answers: QuestionnaireAnswers,
-  playerCount: number,
-): GameMatchResult {
-  const reasons: MatchReason[] = [];
-  const eligible = playerCount >= game.minPlayers && playerCount <= game.maxPlayers;
+export interface GroupConstraints {
+  playerCount: number;
+  /** Age of the youngest participant, used as a hard floor against each game's minAge. */
+  minAge: number;
+}
 
-  if (!eligible) {
+/** Score a single answer set against a single game. Returns 0-100 plus reason keys. */
+export function scoreGame(game: Game, answers: QuestionnaireAnswers, constraints: GroupConstraints): GameMatchResult {
+  const { playerCount, minAge } = constraints;
+  const reasons: MatchReason[] = [];
+  const playerCountOk = playerCount >= game.minPlayers && playerCount <= game.maxPlayers;
+  const ageOk = minAge >= game.minAge;
+  const eligible = playerCountOk && ageOk;
+
+  if (!playerCountOk) {
     reasons.push(
       playerCount < game.minPlayers
         ? { key: 'requiresAtLeast', params: { count: game.minPlayers } }
         : { key: 'supportsUpTo', params: { count: game.maxPlayers } },
     );
+  }
+  if (!ageOk) {
+    reasons.push({ key: 'requiresMinAge', params: { age: game.minAge } });
   }
 
   // Complexity fit: closer to requested weight = better (0-30 pts).
@@ -78,14 +86,8 @@ export function scoreGame(
   return { game, score: Math.round(total), reasons: reasons.slice(0, 3), eligible };
 }
 
-export function rankGames(
-  games: Game[],
-  answers: QuestionnaireAnswers,
-  playerCount: number,
-): GameMatchResult[] {
-  return games
-    .map((game) => scoreGame(game, answers, playerCount))
-    .sort((a, b) => b.score - a.score);
+export function rankGames(games: Game[], answers: QuestionnaireAnswers, constraints: GroupConstraints): GameMatchResult[] {
+  return games.map((game) => scoreGame(game, answers, constraints)).sort((a, b) => b.score - a.score);
 }
 
 function reasonSignature(reason: MatchReason): string {
@@ -101,11 +103,11 @@ function reasonSignature(reason: MatchReason): string {
 export function rankGamesForGroup(
   games: Game[],
   answersList: QuestionnaireAnswers[],
-  playerCount: number,
+  constraints: GroupConstraints,
 ): GameMatchResult[] {
   return games
     .map((game) => {
-      const perPerson = answersList.map((answers) => scoreGame(game, answers, playerCount));
+      const perPerson = answersList.map((answers) => scoreGame(game, answers, constraints));
       const eligible = perPerson.every((r) => r.eligible);
       const scores = perPerson.map((r) => r.score);
       const mean = scores.reduce((a, b) => a + b, 0) / scores.length;

@@ -3,7 +3,7 @@ export type Lang = 'he' | 'en';
 type Dict = Record<string, Record<Lang, string>>;
 
 export const dict = {
-  appName: { he: 'שולחן משחקים', en: 'Game Table' },
+  appName: { he: 'חיבורים', en: 'Connections' },
 
   // Nav
   navHome: { he: 'בית', en: 'Home' },
@@ -52,6 +52,8 @@ export const dict = {
   playerCountHintGroup: { he: 'כל אחד מהם ימלא שאלון קצר בתורו.', en: "Each one will answer a short quiz in turn." },
   playerCountHintSolo: { he: 'נשתמש במספר הזה כדי לוודא שהמשחק תומך בכמות השחקנים שלכם.', en: "We'll use this to make sure the game supports your group size." },
   continueToShelf: { he: 'בואו נבחר אילו משחקים יש לכם ←', en: "Let's pick what games you have →" },
+  ageQuestionLabel: { he: 'מה גיל המשתתף/ת הכי צעיר/ה?', en: "What's the youngest participant's age?" },
+  ageHint: { he: 'כדי לא להציע משחקים שלא מתאימים לגיל.', en: "So we don't suggest games unsuitable for that age." },
 
   // Shelf step
   shelfTitle: { he: 'אילו משחקים נמצאים איתכם?', en: 'Which games do you have with you?' },
@@ -69,6 +71,22 @@ export const dict = {
   continueToQuestions: { he: 'המשך לשאלון ←', en: 'Continue to the quiz →' },
   addMissingGameHint: { he: 'המשחק לא ברשימה?', en: "Game not in the list?" },
   addMissingGameLink: { he: 'הוסיפו אותו לספרייה', en: 'Add it to the library' },
+
+  // Libraries (named, shareable subsets of the catalog)
+  myLibrariesTitle: { he: 'ספריות שמורות', en: 'Saved libraries' },
+  adHocOption: { he: 'בחירה חופשית', en: 'Free pick' },
+  librarySharedBanner: { he: '📚 נטענה ספרייה משותפת: "{{name}}" ({{count}} משחקים)', en: '📚 Loaded shared library: "{{name}}" ({{count}} games)' },
+  libraryGamesCount: { he: '{{count}} משחקים', en: '{{count}} games' },
+  saveAsLibraryBtn: { he: '💾 שמרו כספרייה בשם...', en: '💾 Save as a named library...' },
+  libraryNamePlaceholder: { he: 'שם הספרייה, למשל: הסלון של דנה', en: "Library name, e.g. Dana's living room" },
+  saveLibraryConfirm: { he: 'שמירה ושיתוף', en: 'Save & share' },
+  cancelBtn: { he: 'ביטול', en: 'Cancel' },
+  libraryDeleteBtn: { he: 'מחיקת ספרייה', en: 'Delete library' },
+  shareLinkTitle: { he: 'קישור לספרייה "{{name}}"', en: 'Link for "{{name}}"' },
+  shareLinkHint: { he: 'כל מי שפותח את הקישור הזה (או סורק את ה-QR) מקבל בדיוק את הספרייה הזו, מוכנה לשאלון.', en: 'Anyone who opens this link (or scans the QR) gets exactly this library, ready for the quiz.' },
+  copyLink: { he: '📋 העתקת קישור', en: '📋 Copy link' },
+  linkCopied: { he: '✓ הקישור הועתק', en: '✓ Link copied' },
+  closeBtn: { he: 'סגירה', en: 'Close' },
 
   // Questionnaire
   yourName: { he: 'מה השם שלך?', en: "What's your name?" },
@@ -106,7 +124,11 @@ export const dict = {
   moreIneligible: { he: 'עוד {{count}} משחקים שלא תומכים במספר השחקנים שלכם', en: "{{count}} more games that don't support your player count" },
   requiresAtLeast: { he: 'דורש לפחות {{count}} שחקנים', en: 'Requires at least {{count}} players' },
   supportsUpTo: { he: 'תומך בעד {{count}} שחקנים בלבד', en: 'Supports up to {{count}} players only' },
+  requiresMinAge: { he: 'מיועד לגילאי {{age}}+ ומעלה', en: 'Recommended for ages {{age}}+' },
   emptyShelfResults: { he: 'לא נבחרו משחקים. חזרו אחורה ובחרו אילו משחקים יש לכם.', en: "No games were selected. Go back and pick which games you have." },
+  showCount: { he: 'הצגת', en: 'Show' },
+  showCountTop: { he: 'התאמות מובילות', en: 'top matches' },
+  showAll: { he: 'הכול', en: 'All' },
 
   // Match reasons
   reasonComplexityFit: { he: 'רמת המורכבות מתאימה לך', en: 'Complexity level fits you' },

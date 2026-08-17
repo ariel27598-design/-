@@ -18,7 +18,6 @@ interface GameStore {
 function seedWithIds(): Game[] {
   return SEED_GAMES.map((game, index) => ({
     ...game,
-    id: generateId(),
     createdAt: Date.now() - (SEED_GAMES.length - index) * 1000,
   }));
 }
@@ -65,7 +64,10 @@ export const useGameStore = create<GameStore>()(
     }),
     {
       name: 'boardgame-matcher-storage',
-      version: 1,
+      version: 2,
+      // v2: seed games moved from random per-device ids to fixed slugs so
+      // shared library links resolve consistently. Reset older state.
+      migrate: (persisted, version) => (version < 2 ? { games: seedWithIds() } : (persisted as GameStore)),
     },
   ),
 );

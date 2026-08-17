@@ -1,0 +1,106 @@
+{
+  "catan": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  },
+  "carcassonne": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  },
+  "dixit": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  },
+  "codenames": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  },
+  "ticket-to-ride": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  },
+  "splendor": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  },
+  "azul": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  },
+  "pandemic": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  },
+  "7-wonders": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  },
+  "uno": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  },
+  "taboo": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  },
+  "dobble": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  },
+  "werewolf": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  },
+  "monopoly": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  },
+  "bang": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  },
+  "just-one": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  },
+  "avalon": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  },
+  "wingspan": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  },
+  "terraforming-mars": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  },
+  "love-letter": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  },
+  "forbidden-island": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  },
+  "alcatraz": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  },
+  "exploding-kittens": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  },
+  "alias-israel": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  },
+  "african-mancala": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  },
+  "davinci-code": {
+    "ok": false,
+    "reason": "HTTP Error 401: Unauthorized"
+  }
+}

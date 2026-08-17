@@ -12,8 +12,8 @@ jobs:
     steps:
       - name: Create bucket
         run: |
-          echo "--- POST https://kvdb.io/ ---"
-          curl -sS -i -X POST https://kvdb.io/ | tee /tmp/create.txt
+          echo "--- POST https://kvdb.io/?email=... ---"
+          curl -sS -i -X POST "https://kvdb.io/?email=connections.boardgames.app@gmail.com" | tee /tmp/create.txt
           echo ""
           BUCKET=$(tail -n1 /tmp/create.txt | tr -d '\r\n')
           echo "BUCKET_ID=$BUCKET"

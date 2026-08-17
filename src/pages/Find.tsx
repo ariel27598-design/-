@@ -11,6 +11,7 @@ import QuestionnaireForm from '../components/QuestionnaireForm';
 import GameCard from '../components/GameCard';
 import BarcodeScanner from '../components/BarcodeScanner';
 import ShareLibraryModal from '../components/ShareLibraryModal';
+import NumberField from '../components/NumberField';
 
 type Mode = 'solo' | 'group';
 type Step = 'setup' | 'shelf' | 'questions' | 'results';
@@ -210,25 +211,11 @@ export default function Find() {
         <div className="grid grid-cols-2 gap-3">
           <label className="flex flex-col gap-1.5">
             <span className="text-sm font-semibold text-slate-200">{t('playerCountLabel')}</span>
-            <input
-              type="number"
-              min={1}
-              max={20}
-              value={playerCount}
-              onChange={(e) => setPlayerCount(Math.max(1, Number(e.target.value)))}
-              className="input"
-            />
+            <NumberField min={1} max={20} value={playerCount} onChange={(n) => setPlayerCount(Math.max(1, n))} />
           </label>
           <label className="flex flex-col gap-1.5">
             <span className="text-sm font-semibold text-slate-200">{t('ageQuestionLabel')}</span>
-            <input
-              type="number"
-              min={0}
-              max={99}
-              value={groupMinAge}
-              onChange={(e) => setGroupMinAge(Math.max(0, Number(e.target.value)))}
-              className="input"
-            />
+            <NumberField min={0} max={99} value={groupMinAge} onChange={(n) => setGroupMinAge(Math.max(0, n))} />
           </label>
         </div>
         <span className="-mt-3 text-xs text-slate-500">

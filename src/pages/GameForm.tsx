@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useGameStore } from '../store/useGameStore';
 import { ALL_CATEGORIES, type Category, type NewGame } from '../types';
 import { placeholderCover } from '../lib/placeholder';
-import { lookupProductByBarcode } from '../lib/barcodeLookup';
 import { recognizeText } from '../lib/ocr';
 import { useT } from '../i18n/useT';
 import CategoryPill from '../components/CategoryPill';
+import NumberField from '../components/NumberField';
+import BarcodeScanner from '../components/BarcodeScanner';
 
-type LookupStatus = 'idle' | 'loading' | 'found' | 'not-found';
 type OcrStatus = 'idle' | 'recognizing' | 'done' | 'no-text';
 
 interface Props {
@@ -35,9 +35,27 @@ function emptyForm(): NewGame {
   };
 }
 
+interface ExtractedFacts {
+  minPlayers?: number;
+  maxPlayers?: number;
+  minAge?: number;
+  playtime?: number;
+}
+
+function extractGameFacts(text: string): ExtractedFacts {
+  const playerMatch = text.match(/(\d{1,2})\s*[-–]\s*(\d{1,2})\s*(?:שחקנים|players)/i);
+  const ageMatch = text.match(/(?:גיל|גילאי|age)s?\D{0,4}(\d{1,2})\s*\+?/i);
+  const timeMatch = text.match(/(\d{2,3})\s*(?:דקות|min)/i);
+  return {
+    minPlayers: playerMatch ? Number(playerMatch[1]) : undefined,
+    maxPlayers: playerMatch ? Number(playerMatch[2]) : undefined,
+    minAge: ageMatch ? Number(ageMatch[1]) : undefined,
+    playtime: timeMatch ? Number(timeMatch[1]) : undefined,
+  };
+}
+
 export default function GameForm({ mode }: Props) {
   const { id } = useParams();
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { t, tCategory, tText } = useT();
   const games = useGameStore((s) => s.games);
@@ -48,18 +66,16 @@ export default function GameForm({ mode }: Props) {
   const existing = mode === 'edit' ? games.find((g) => g.id === id) : undefined;
 
   function buildFormFromExisting(): NewGame {
-    if (!existing) {
-      const prefillBarcode = searchParams.get('barcode');
-      return { ...emptyForm(), barcodes: prefillBarcode ? [prefillBarcode] : [] };
-    }
+    if (!existing) return emptyForm();
     return { ...existing, name: tText(existing.name), description: tText(existing.description) };
   }
 
   const [form, setForm] = useState<NewGame>(buildFormFromExisting);
-  const [barcodeInput, setBarcodeInput] = useState('');
   const [imagePreview, setImagePreview] = useState(existing?.imageUrl ?? '');
-  const [lookupStatus, setLookupStatus] = useState<LookupStatus>('idle');
-  const [ocrStatus, setOcrStatus] = useState<OcrStatus>('idle');
+  const [coverOcrStatus, setCoverOcrStatus] = useState<OcrStatus>('idle');
+  const [instructionsOcrStatus, setInstructionsOcrStatus] = useState<OcrStatus>('idle');
+  const [showBarcodeSection, setShowBarcodeSection] = useState(false);
+  const [showBarcodeScanner, setShowBarcodeScanner] = useState(false);
 
   useEffect(() => {
     if (existing) {
@@ -68,32 +84,6 @@ export default function GameForm({ mode }: Props) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [existing?.id]);
-
-  async function lookupBarcode(code: string) {
-    if (!code) return;
-    setLookupStatus('loading');
-    const result = await lookupProductByBarcode(code);
-    if (!result) {
-      setLookupStatus('not-found');
-      return;
-    }
-    setForm((f) => ({
-      ...f,
-      name: typeof f.name === 'string' && f.name ? f.name : result.name ?? f.name,
-      imageUrl: f.imageUrl || result.imageUrl || f.imageUrl,
-    }));
-    if (result.imageUrl && !form.imageUrl) setImagePreview(result.imageUrl);
-    setLookupStatus('found');
-  }
-
-  // Auto-lookup once when arriving from a barcode scan with an empty form.
-  useEffect(() => {
-    const prefillBarcode = searchParams.get('barcode');
-    if (mode === 'create' && prefillBarcode) {
-      lookupBarcode(prefillBarcode);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   if (mode === 'edit' && !existing) {
     return (
@@ -114,15 +104,13 @@ export default function GameForm({ mode }: Props) {
     }));
   }
 
-  function addBarcode() {
-    const code = barcodeInput.trim();
-    if (!code || form.barcodes.includes(code)) return;
-    set('barcodes', [...form.barcodes, code]);
-    setBarcodeInput('');
-  }
-
   function removeBarcode(code: string) {
     set('barcodes', form.barcodes.filter((b) => b !== code));
+  }
+
+  function handleBarcodeScanResult(code: string) {
+    setForm((f) => (f.barcodes.includes(code) ? f : { ...f, barcodes: [...f.barcodes, code] }));
+    setShowBarcodeScanner(false);
   }
 
   function handleImageFile(e: React.ChangeEvent<HTMLInputElement>) {
@@ -149,10 +137,10 @@ export default function GameForm({ mode }: Props) {
     };
     reader.readAsDataURL(file);
 
-    setOcrStatus('recognizing');
+    setCoverOcrStatus('recognizing');
     const text = await recognizeText(file);
     if (!text) {
-      setOcrStatus('no-text');
+      setCoverOcrStatus('no-text');
       return;
     }
     const lines = text.split('\n').map((l) => l.trim()).filter(Boolean);
@@ -164,7 +152,34 @@ export default function GameForm({ mode }: Props) {
       const description = currentDesc || remainder || text;
       return { ...f, name, description };
     });
-    setOcrStatus('done');
+    setCoverOcrStatus('done');
+  }
+
+  async function handleInstructionsPhoto(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setInstructionsOcrStatus('recognizing');
+    const text = await recognizeText(file);
+    if (!text) {
+      setInstructionsOcrStatus('no-text');
+      return;
+    }
+    const facts = extractGameFacts(text);
+    const defaults = emptyForm();
+    setForm((f) => {
+      const currentDesc = typeof f.description === 'string' ? f.description.trim() : '';
+      const description = currentDesc ? `${currentDesc}\n\n${text}` : text;
+      const next: NewGame = { ...f, description };
+      if (mode === 'create') {
+        if (facts.minPlayers && f.minPlayers === defaults.minPlayers) next.minPlayers = facts.minPlayers;
+        if (facts.maxPlayers && f.maxPlayers === defaults.maxPlayers) next.maxPlayers = facts.maxPlayers;
+        if (facts.minAge && f.minAge === defaults.minAge) next.minAge = facts.minAge;
+        if (facts.playtime && f.maxPlaytime === defaults.maxPlaytime) next.maxPlaytime = facts.playtime;
+      }
+      return next;
+    });
+    setInstructionsOcrStatus('done');
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -230,10 +245,23 @@ export default function GameForm({ mode }: Props) {
                 {t('scanBoxPhotoBtn')}
                 <input type="file" accept="image/*" capture="environment" onChange={handleBoxPhoto} className="hidden" />
               </label>
-              {ocrStatus === 'recognizing' && <span className="text-xs text-slate-400">{t('ocrRecognizing')}</span>}
-              {ocrStatus === 'done' && <span className="text-xs text-emerald-300">{t('ocrDone')}</span>}
-              {ocrStatus === 'no-text' && <span className="text-xs text-amber-300">{t('ocrNoText')}</span>}
+              {coverOcrStatus === 'recognizing' && <span className="text-xs text-slate-400">{t('ocrRecognizing')}</span>}
+              {coverOcrStatus === 'done' && <span className="text-xs text-emerald-300">{t('ocrDone')}</span>}
+              {coverOcrStatus === 'no-text' && <span className="text-xs text-amber-300">{t('ocrNoText')}</span>}
             </div>
+          </div>
+        </Field>
+
+        <Field label={t('instructionsPhotoLabel')}>
+          <div className="flex flex-col gap-2">
+            <p className="text-xs text-slate-500">{t('instructionsPhotoHint')}</p>
+            <label className="btn-secondary cursor-pointer self-start text-sm">
+              {t('instructionsPhotoBtn')}
+              <input type="file" accept="image/*" capture="environment" onChange={handleInstructionsPhoto} className="hidden" />
+            </label>
+            {instructionsOcrStatus === 'recognizing' && <span className="text-xs text-slate-400">{t('ocrRecognizing')}</span>}
+            {instructionsOcrStatus === 'done' && <span className="text-xs text-emerald-300">{t('ocrDone')}</span>}
+            {instructionsOcrStatus === 'no-text' && <span className="text-xs text-amber-300">{t('ocrNoText')}</span>}
           </div>
         </Field>
 
@@ -274,55 +302,46 @@ export default function GameForm({ mode }: Props) {
           />
         </Field>
 
-        <Field label={t('barcodesFieldLabel')}>
-          <div className="flex gap-2">
-            <input
-              value={barcodeInput}
-              onChange={(e) => setBarcodeInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  e.preventDefault();
-                  addBarcode();
-                }
-              }}
-              placeholder={t('barcodePlaceholder')}
-              className="input flex-1"
-            />
-            <button type="button" onClick={addBarcode} className="btn-secondary shrink-0">
-              {t('addBarcodeBtn')}
-            </button>
-          </div>
-          {form.barcodes.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-1.5">
-              {form.barcodes.map((code) => (
-                <span
-                  key={code}
-                  className="flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-1 text-xs text-slate-200"
-                  dir="ltr"
-                >
-                  {code}
-                  <button
-                    type="button"
-                    onClick={() => removeBarcode(code)}
-                    className="text-slate-400 hover:text-rose-300"
-                  >
-                    ✕
-                  </button>
-                </span>
-              ))}
-            </div>
-          )}
+        <Field label="">
           <button
             type="button"
-            onClick={() => lookupBarcode(barcodeInput.trim() || form.barcodes[0])}
-            disabled={lookupStatus === 'loading' || (!barcodeInput.trim() && form.barcodes.length === 0)}
-            className="mt-1 self-start text-xs font-semibold text-indigo-300 hover:text-indigo-200 disabled:cursor-not-allowed disabled:opacity-40"
+            onClick={() => setShowBarcodeSection((v) => !v)}
+            className="self-start text-xs font-semibold text-indigo-300 hover:text-indigo-200"
           >
-            {t('lookupBarcodeBtn')}
+            {showBarcodeSection ? t('hideBarcodeSection') : t('showBarcodeSection')}
           </button>
-          {lookupStatus === 'loading' && <p className="text-xs text-slate-400">{t('lookingUpProduct')}</p>}
-          {lookupStatus === 'found' && <p className="text-xs text-emerald-300">{t('productFoundHint')}</p>}
-          {lookupStatus === 'not-found' && <p className="text-xs text-amber-300">{t('productNotFoundHint')}</p>}
+          {showBarcodeSection && (
+            <div className="mt-2 flex flex-col gap-2">
+              <p className="text-xs text-slate-500">{t('barcodeOptionalHint')}</p>
+              {form.barcodes.length > 0 && (
+                <div className="flex flex-wrap gap-1.5">
+                  {form.barcodes.map((code) => (
+                    <span
+                      key={code}
+                      className="flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-1 text-xs text-slate-200"
+                      dir="ltr"
+                    >
+                      {code}
+                      <button type="button" onClick={() => removeBarcode(code)} className="text-slate-400 hover:text-rose-300">
+                        ✕
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
+              {showBarcodeScanner ? (
+                <BarcodeScanner onResult={handleBarcodeScanResult} />
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setShowBarcodeScanner(true)}
+                  className="btn-secondary self-start"
+                >
+                  {t('scanBarcodeAddBtn')}
+                </button>
+              )}
+            </div>
+          )}
         </Field>
 
         <Field label="">
@@ -341,51 +360,19 @@ export default function GameForm({ mode }: Props) {
       <Section title={t('gameplayAttributes')}>
         <div className="grid grid-cols-2 gap-4">
           <Field label={t('minPlayersLabel')}>
-            <input
-              type="number"
-              min={1}
-              value={form.minPlayers}
-              onChange={(e) => set('minPlayers', Number(e.target.value))}
-              className="input"
-            />
+            <NumberField min={1} value={form.minPlayers} onChange={(n) => set('minPlayers', n)} />
           </Field>
           <Field label={t('maxPlayersLabel')}>
-            <input
-              type="number"
-              min={1}
-              value={form.maxPlayers}
-              onChange={(e) => set('maxPlayers', Number(e.target.value))}
-              className="input"
-            />
+            <NumberField min={1} value={form.maxPlayers} onChange={(n) => set('maxPlayers', n)} />
           </Field>
           <Field label={t('minPlaytimeLabel')}>
-            <input
-              type="number"
-              min={5}
-              step={5}
-              value={form.minPlaytime}
-              onChange={(e) => set('minPlaytime', Number(e.target.value))}
-              className="input"
-            />
+            <NumberField min={5} step={5} value={form.minPlaytime} onChange={(n) => set('minPlaytime', n)} />
           </Field>
           <Field label={t('maxPlaytimeLabel')}>
-            <input
-              type="number"
-              min={5}
-              step={5}
-              value={form.maxPlaytime}
-              onChange={(e) => set('maxPlaytime', Number(e.target.value))}
-              className="input"
-            />
+            <NumberField min={5} step={5} value={form.maxPlaytime} onChange={(n) => set('maxPlaytime', n)} />
           </Field>
           <Field label={t('minAgeLabel')}>
-            <input
-              type="number"
-              min={0}
-              value={form.minAge}
-              onChange={(e) => set('minAge', Number(e.target.value))}
-              className="input"
-            />
+            <NumberField min={0} value={form.minAge} onChange={(n) => set('minAge', n)} />
           </Field>
         </div>
 

@@ -68,6 +68,15 @@ export const useGameStore = create<GameStore>()(
       // v2: seed games moved from random per-device ids to fixed slugs so
       // shared library links resolve consistently. Reset older state.
       migrate: (persisted, version) => (version < 2 ? { games: seedWithIds() } : (persisted as GameStore)),
+      // New seed games added later should reach people who already have
+      // persisted state, without discarding anything they've added/edited.
+      merge: (persisted, current) => {
+        const persistedState = persisted as Partial<GameStore> | undefined;
+        if (!persistedState || !Array.isArray(persistedState.games)) return current;
+        const existingIds = new Set(persistedState.games.map((g) => g.id));
+        const newSeeds = current.games.filter((g) => !existingIds.has(g.id));
+        return { ...current, ...persistedState, games: [...persistedState.games, ...newSeeds] };
+      },
     },
   ),
 );

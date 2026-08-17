@@ -27,34 +27,13 @@ jobs:
 
           GAMES = [
               ("catan", "Catan"),
-              ("carcassonne", "Carcassonne"),
-              ("dixit", "Dixit"),
-              ("codenames", "Codenames"),
-              ("ticket-to-ride", "Ticket to Ride"),
-              ("splendor", "Splendor"),
-              ("azul", "Azul"),
-              ("pandemic", "Pandemic"),
-              ("7-wonders", "7 Wonders"),
-              ("uno", "Uno"),
-              ("taboo", "Taboo"),
-              ("dobble", "Spot It!"),
-              ("werewolf", "One Night Ultimate Werewolf"),
-              ("monopoly", "Monopoly"),
-              ("bang", "Bang!"),
-              ("just-one", "Just One"),
-              ("avalon", "The Resistance: Avalon"),
-              ("wingspan", "Wingspan"),
-              ("terraforming-mars", "Terraforming Mars"),
-              ("love-letter", "Love Letter"),
-              ("forbidden-island", "Forbidden Island"),
-              ("alcatraz", "Alcatraz: The Scapegoat"),
-              ("exploding-kittens", "Exploding Kittens"),
-              ("alias-israel", "Alias"),
-              ("african-mancala", "Mancala"),
-              ("davinci-code", "Da Vinci Code"),
           ]
 
-          HEADERS = {"User-Agent": "Mozilla/5.0 (board-game-matcher-cover-fetch/1.0)"}
+          HEADERS = {
+              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+              "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+              "Accept-Language": "en-US,en;q=0.9",
+          }
 
           def fetch(url):
               req = urllib.request.Request(url, headers=HEADERS)

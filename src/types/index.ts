@@ -1,42 +1,19 @@
 // Core domain types for the board game matcher app.
+import type { Category } from '../i18n/categories';
+import type { LocalizedText } from '../i18n/useT';
+import type { TranslationKey } from '../i18n/translations';
 
-export type Category =
-  | 'משפחתי'
-  | 'מסיבה'
-  | 'אסטרטגיה'
-  | 'שיתופי'
-  | 'קלפים'
-  | 'ילדים'
-  | 'מילים'
-  | 'אבסטרקט'
-  | 'הרפתקאות'
-  | 'כלכלי'
-  | 'לילה'
-  | 'זוגי';
-
-export const ALL_CATEGORIES: Category[] = [
-  'משפחתי',
-  'מסיבה',
-  'אסטרטגיה',
-  'שיתופי',
-  'קלפים',
-  'ילדים',
-  'מילים',
-  'אבסטרקט',
-  'הרפתקאות',
-  'כלכלי',
-  'לילה',
-  'זוגי',
-];
+export type { Category };
+export { ALL_CATEGORIES } from '../i18n/categories';
 
 export interface Game {
   id: string;
-  name: string;
+  name: LocalizedText;
   /** One or more barcodes (UPC/EAN) associated with printings of this game. */
   barcodes: string[];
   imageUrl: string;
   /** Short explanation of how the game is played. */
-  description: string;
+  description: LocalizedText;
   /** Optional YouTube (or other) video URL explaining the game. */
   videoUrl?: string;
   minPlayers: number;
@@ -51,7 +28,7 @@ export interface Game {
   luckVsStrategy: number;
   cooperative: boolean;
   categories: Category[];
-  /** True when this copy physically exists in the user's collection. */
+  /** True when this copy is physically present on the user's shelf. */
   owned: boolean;
   createdAt: number;
 }
@@ -73,9 +50,14 @@ export interface QuestionnaireAnswers {
   willingToLearnRules: number;
 }
 
+export interface MatchReason {
+  key: TranslationKey;
+  params?: Record<string, string | number>;
+}
+
 export interface GameMatchResult {
   game: Game;
   score: number;
-  reasons: string[];
+  reasons: MatchReason[];
   eligible: boolean;
 }

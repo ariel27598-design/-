@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Category, QuestionnaireAnswers } from '../types';
 import { ALL_CATEGORIES } from '../types';
+import { useT } from '../i18n/useT';
 import CategoryPill from './CategoryPill';
 
 interface Props {
@@ -10,15 +11,8 @@ interface Props {
   onSubmit: (answers: QuestionnaireAnswers) => void;
 }
 
-const TIME_OPTIONS = [
-  { value: 20, label: 'עד 20 דקות' },
-  { value: 40, label: 'כחצי שעה' },
-  { value: 60, label: 'שעה בערך' },
-  { value: 100, label: 'שעה וחצי-שעתיים' },
-  { value: 150, label: 'ערב שלם' },
-];
-
 export default function QuestionnaireForm({ defaultName, requireName, submitLabel, onSubmit }: Props) {
+  const { t, tCategory } = useT();
   const [personName, setPersonName] = useState(defaultName);
   const [timeAvailable, setTimeAvailable] = useState(60);
   const [complexity, setComplexity] = useState(3);
@@ -26,6 +20,14 @@ export default function QuestionnaireForm({ defaultName, requireName, submitLabe
   const [socialMode, setSocialMode] = useState<QuestionnaireAnswers['socialMode']>('either');
   const [preferredCategories, setPreferredCategories] = useState<Category[]>([]);
   const [willingToLearnRules, setWillingToLearnRules] = useState(3);
+
+  const TIME_OPTIONS = [
+    { value: 20, label: t('time20') },
+    { value: 40, label: t('time40') },
+    { value: 60, label: t('time60') },
+    { value: 100, label: t('time100') },
+    { value: 150, label: t('time150') },
+  ];
 
   function toggleCategory(cat: Category) {
     setPreferredCategories((prev) => (prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat]));
@@ -47,17 +49,17 @@ export default function QuestionnaireForm({ defaultName, requireName, submitLabe
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
       {requireName && (
-        <Question label="מה השם שלך?">
+        <Question label={t('yourName')}>
           <input
             value={personName}
             onChange={(e) => setPersonName(e.target.value)}
-            placeholder="השם שלך"
+            placeholder={t('yourNamePlaceholder')}
             className="input"
           />
         </Question>
       )}
 
-      <Question label="כמה זמן יש לכם למשחק?">
+      <Question label={t('timeQuestion')}>
         <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
           {TIME_OPTIONS.map((opt) => (
             <button
@@ -76,25 +78,25 @@ export default function QuestionnaireForm({ defaultName, requireName, submitLabe
         </div>
       </Question>
 
-      <Question label="עד כמה אתם אוהבים משחקים מורכבים עם הרבה חוקים?">
-        <SliderRow value={complexity} onChange={setComplexity} minLabel="קליל וקצר" maxLabel="עמוק ומורכב" />
+      <Question label={t('complexityQuestion')}>
+        <SliderRow value={complexity} onChange={setComplexity} minLabel={t('complexityLight')} maxLabel={t('complexityHeavy')} />
       </Question>
 
-      <Question label="מה מושך אתכם יותר - מזל או אסטרטגיה?">
-        <SliderRow value={luckVsStrategy} onChange={setLuckVsStrategy} minLabel="מזל וקלילות" maxLabel="חשיבה ואסטרטגיה" />
+      <Question label={t('luckQuestion')}>
+        <SliderRow value={luckVsStrategy} onChange={setLuckVsStrategy} minLabel={t('luckLight')} maxLabel={t('luckStrategy')} />
       </Question>
 
-      <Question label="כמה אתם פתוחים ללמוד חוקים מורכבים בהתחלה?">
-        <SliderRow value={willingToLearnRules} onChange={setWillingToLearnRules} minLabel="שיהיה פשוט" maxLabel="לא בעיה ללמוד" />
+      <Question label={t('rulesQuestion')}>
+        <SliderRow value={willingToLearnRules} onChange={setWillingToLearnRules} minLabel={t('rulesSimple')} maxLabel={t('rulesFine')} />
       </Question>
 
-      <Question label="איך אתם אוהבים לשחק?">
+      <Question label={t('socialQuestion')}>
         <div className="flex flex-wrap gap-2">
           {(
             [
-              ['cooperative', '🤝 יחד נגד המשחק'],
-              ['competitive', '⚔️ אחד נגד השני'],
-              ['either', '🤷 לא משנה'],
+              ['cooperative', t('socialCooperative')],
+              ['competitive', t('socialCompetitive')],
+              ['either', t('socialEither')],
             ] as [QuestionnaireAnswers['socialMode'], string][]
           ).map(([value, label]) => (
             <button
@@ -113,10 +115,15 @@ export default function QuestionnaireForm({ defaultName, requireName, submitLabe
         </div>
       </Question>
 
-      <Question label="אילו סגנונות מושכים אתכם? (אופציונלי)">
+      <Question label={t('categoriesQuestion')}>
         <div className="flex flex-wrap gap-1.5">
           {ALL_CATEGORIES.map((cat) => (
-            <CategoryPill key={cat} label={cat} active={preferredCategories.includes(cat)} onClick={() => toggleCategory(cat)} />
+            <CategoryPill
+              key={cat}
+              label={tCategory(cat)}
+              active={preferredCategories.includes(cat)}
+              onClick={() => toggleCategory(cat)}
+            />
           ))}
         </div>
       </Question>

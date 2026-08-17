@@ -3,34 +3,38 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useGameStore } from '../store/useGameStore';
 import { ALL_CATEGORIES, type Category, type NewGame } from '../types';
 import { placeholderCover } from '../lib/placeholder';
+import { useT } from '../i18n/useT';
 import CategoryPill from '../components/CategoryPill';
 
 interface Props {
   mode: 'create' | 'edit';
 }
 
-const EMPTY_FORM: NewGame = {
-  name: '',
-  barcodes: [],
-  imageUrl: '',
-  description: '',
-  videoUrl: '',
-  minPlayers: 2,
-  maxPlayers: 4,
-  minPlaytime: 30,
-  maxPlaytime: 60,
-  minAge: 8,
-  weight: 3,
-  luckVsStrategy: 3,
-  cooperative: false,
-  categories: [],
-  owned: true,
-};
+function emptyForm(): NewGame {
+  return {
+    name: '',
+    barcodes: [],
+    imageUrl: '',
+    description: '',
+    videoUrl: '',
+    minPlayers: 2,
+    maxPlayers: 4,
+    minPlaytime: 30,
+    maxPlaytime: 60,
+    minAge: 8,
+    weight: 3,
+    luckVsStrategy: 3,
+    cooperative: false,
+    categories: [],
+    owned: true,
+  };
+}
 
 export default function GameForm({ mode }: Props) {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { t, tCategory, tText } = useT();
   const games = useGameStore((s) => s.games);
   const addGame = useGameStore((s) => s.addGame);
   const updateGame = useGameStore((s) => s.updateGame);
@@ -38,25 +42,30 @@ export default function GameForm({ mode }: Props) {
 
   const existing = mode === 'edit' ? games.find((g) => g.id === id) : undefined;
 
-  const [form, setForm] = useState<NewGame>(() => {
-    if (existing) return { ...existing };
-    const prefillBarcode = searchParams.get('barcode');
-    return { ...EMPTY_FORM, barcodes: prefillBarcode ? [prefillBarcode] : [] };
-  });
+  function buildFormFromExisting(): NewGame {
+    if (!existing) {
+      const prefillBarcode = searchParams.get('barcode');
+      return { ...emptyForm(), barcodes: prefillBarcode ? [prefillBarcode] : [] };
+    }
+    return { ...existing, name: tText(existing.name), description: tText(existing.description) };
+  }
+
+  const [form, setForm] = useState<NewGame>(buildFormFromExisting);
   const [barcodeInput, setBarcodeInput] = useState('');
   const [imagePreview, setImagePreview] = useState(existing?.imageUrl ?? '');
 
   useEffect(() => {
     if (existing) {
-      setForm({ ...existing });
+      setForm(buildFormFromExisting());
       setImagePreview(existing.imageUrl);
     }
-  }, [existing]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [existing?.id]);
 
   if (mode === 'edit' && !existing) {
     return (
       <div className="rounded-2xl border border-dashed border-white/15 p-10 text-center text-slate-400">
-        המשחק לא נמצא.
+        {t('gameNotFound')}
       </div>
     );
   }
@@ -97,12 +106,13 @@ export default function GameForm({ mode }: Props) {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!form.name.trim()) return;
+    const name = typeof form.name === 'string' ? form.name.trim() : '';
+    if (!name) return;
 
     const payload: NewGame = {
       ...form,
-      name: form.name.trim(),
-      imageUrl: form.imageUrl.trim() || placeholderCover(form.name.trim()),
+      name,
+      imageUrl: form.imageUrl.trim() || placeholderCover(name),
       minPlayers: Math.min(form.minPlayers, form.maxPlayers),
       maxPlayers: Math.max(form.minPlayers, form.maxPlayers),
       minPlaytime: Math.min(form.minPlaytime, form.maxPlaytime),
@@ -120,33 +130,35 @@ export default function GameForm({ mode }: Props) {
 
   function handleDelete() {
     if (!existing) return;
-    if (!confirm(`למחוק את "${existing.name}" מהספרייה?`)) return;
+    if (!confirm(t('confirmDelete', { name: tText(existing.name) }))) return;
     deleteGame(existing.id);
     navigate('/library');
   }
 
+  const nameValue = typeof form.name === 'string' ? form.name : '';
+
   return (
     <form onSubmit={handleSubmit} className="mx-auto flex max-w-2xl flex-col gap-6 pb-10">
       <div>
-        <h1 className="text-2xl font-bold text-white">{mode === 'edit' ? 'עריכת משחק' : 'הוספת משחק חדש'}</h1>
-        <p className="text-sm text-slate-400">מלאו כמה שיותר פרטים כדי שהשאלון יוכל להתאים את המשחק בצורה מדויקת.</p>
+        <h1 className="text-2xl font-bold text-white">{mode === 'edit' ? t('editGameTitle') : t('addGameTitle')}</h1>
+        <p className="text-sm text-slate-400">{t('addGameSubtitle')}</p>
       </div>
 
-      <Section title="פרטים בסיסיים">
-        <Field label="שם המשחק *">
+      <Section title={t('basicDetails')}>
+        <Field label={t('gameNameLabel')}>
           <input
             required
-            value={form.name}
+            value={nameValue}
             onChange={(e) => set('name', e.target.value)}
             className="input"
-            placeholder="לדוגמה: קטאן"
+            placeholder={t('gameNamePlaceholder')}
           />
         </Field>
 
-        <Field label="תמונת קופסה">
+        <Field label={t('coverImageLabel')}>
           <div className="flex items-center gap-3">
             <img
-              src={imagePreview || placeholderCover(form.name || '?')}
+              src={imagePreview || placeholderCover(nameValue || '?')}
               alt=""
               className="h-16 w-16 rounded-xl object-cover"
             />
@@ -157,25 +169,26 @@ export default function GameForm({ mode }: Props) {
                   set('imageUrl', e.target.value);
                   setImagePreview(e.target.value);
                 }}
-                placeholder="כתובת URL לתמונה (אופציונלי)"
+                placeholder={t('imageUrlPlaceholder')}
                 className="input"
               />
               <input type="file" accept="image/*" onChange={handleImageFile} className="text-xs text-slate-400" />
+              <span className="text-xs text-indigo-300/80">📷 {t('imageUploadHint')}</span>
             </div>
           </div>
         </Field>
 
-        <Field label="הסבר קצר על איך משחקים">
+        <Field label={t('descriptionLabel')}>
           <textarea
-            value={form.description}
+            value={typeof form.description === 'string' ? form.description : ''}
             onChange={(e) => set('description', e.target.value)}
             rows={4}
             className="input resize-none"
-            placeholder="כמה משפטים על מטרת המשחק ואיך משחקים אותו"
+            placeholder={t('descriptionPlaceholder')}
           />
         </Field>
 
-        <Field label="קישור לסרטון הסבר (יוטיוב וכו')">
+        <Field label={t('videoLabel')}>
           <input
             value={form.videoUrl ?? ''}
             onChange={(e) => set('videoUrl', e.target.value)}
@@ -184,7 +197,7 @@ export default function GameForm({ mode }: Props) {
           />
         </Field>
 
-        <Field label="ברקודים">
+        <Field label={t('barcodesFieldLabel')}>
           <div className="flex gap-2">
             <input
               value={barcodeInput}
@@ -195,11 +208,11 @@ export default function GameForm({ mode }: Props) {
                   addBarcode();
                 }
               }}
-              placeholder="הזינו ברקוד והוסיפו"
+              placeholder={t('barcodePlaceholder')}
               className="input flex-1"
             />
             <button type="button" onClick={addBarcode} className="btn-secondary shrink-0">
-              הוספה
+              {t('addBarcodeBtn')}
             </button>
           </div>
           {form.barcodes.length > 0 && (
@@ -232,14 +245,14 @@ export default function GameForm({ mode }: Props) {
               onChange={(e) => set('owned', e.target.checked)}
               className="h-4 w-4 accent-indigo-500"
             />
-            המשחק נמצא ברשותי פיזית
+            {t('onShelfCheckbox')}
           </label>
         </Field>
       </Section>
 
-      <Section title="מאפייני שיחוק (למנוע ההתאמה)">
+      <Section title={t('gameplayAttributes')}>
         <div className="grid grid-cols-2 gap-4">
-          <Field label="שחקנים (מינ')">
+          <Field label={t('minPlayersLabel')}>
             <input
               type="number"
               min={1}
@@ -248,7 +261,7 @@ export default function GameForm({ mode }: Props) {
               className="input"
             />
           </Field>
-          <Field label="שחקנים (מקס')">
+          <Field label={t('maxPlayersLabel')}>
             <input
               type="number"
               min={1}
@@ -257,7 +270,7 @@ export default function GameForm({ mode }: Props) {
               className="input"
             />
           </Field>
-          <Field label="זמן משחק (מינ') בדקות">
+          <Field label={t('minPlaytimeLabel')}>
             <input
               type="number"
               min={5}
@@ -267,7 +280,7 @@ export default function GameForm({ mode }: Props) {
               className="input"
             />
           </Field>
-          <Field label="זמן משחק (מקס') בדקות">
+          <Field label={t('maxPlaytimeLabel')}>
             <input
               type="number"
               min={5}
@@ -277,7 +290,7 @@ export default function GameForm({ mode }: Props) {
               className="input"
             />
           </Field>
-          <Field label="גיל מינימלי">
+          <Field label={t('minAgeLabel')}>
             <input
               type="number"
               min={0}
@@ -288,7 +301,7 @@ export default function GameForm({ mode }: Props) {
           </Field>
         </div>
 
-        <Field label={`מורכבות: ${form.weight}/5`}>
+        <Field label={t('complexityRangeLabel', { value: form.weight })}>
           <input
             type="range"
             min={1}
@@ -298,12 +311,12 @@ export default function GameForm({ mode }: Props) {
             className="w-full accent-indigo-500"
           />
           <div className="flex justify-between text-xs text-slate-500">
-            <span>קליל</span>
-            <span>כבד</span>
+            <span>{t('complexityLightShort')}</span>
+            <span>{t('complexityHeavyShort')}</span>
           </div>
         </Field>
 
-        <Field label={`מזל מול אסטרטגיה: ${form.luckVsStrategy}/5`}>
+        <Field label={t('luckRangeLabel', { value: form.luckVsStrategy })}>
           <input
             type="range"
             min={1}
@@ -313,8 +326,8 @@ export default function GameForm({ mode }: Props) {
             className="w-full accent-indigo-500"
           />
           <div className="flex justify-between text-xs text-slate-500">
-            <span>מזל</span>
-            <span>אסטרטגיה</span>
+            <span>{t('luckShort')}</span>
+            <span>{t('strategyShort')}</span>
           </div>
         </Field>
 
@@ -326,14 +339,14 @@ export default function GameForm({ mode }: Props) {
               onChange={(e) => set('cooperative', e.target.checked)}
               className="h-4 w-4 accent-indigo-500"
             />
-            משחק שיתופי (כולם נגד המשחק)
+            {t('cooperativeCheckbox')}
           </label>
         </Field>
 
-        <Field label="קטגוריות">
+        <Field label={t('categoriesLabel')}>
           <div className="flex flex-wrap gap-1.5">
             {ALL_CATEGORIES.map((cat) => (
-              <CategoryPill key={cat} label={cat} active={form.categories.includes(cat)} onClick={() => toggleCategory(cat)} />
+              <CategoryPill key={cat} label={tCategory(cat)} active={form.categories.includes(cat)} onClick={() => toggleCategory(cat)} />
             ))}
           </div>
         </Field>
@@ -341,7 +354,7 @@ export default function GameForm({ mode }: Props) {
 
       <div className="flex gap-3">
         <button type="submit" className="flex-1 rounded-full bg-indigo-500 py-3 text-sm font-bold text-white hover:bg-indigo-400">
-          {mode === 'edit' ? 'שמירת שינויים' : 'הוספת המשחק לספרייה'}
+          {mode === 'edit' ? t('saveChanges') : t('addToLibrary')}
         </button>
         {mode === 'edit' && (
           <button
@@ -349,7 +362,7 @@ export default function GameForm({ mode }: Props) {
             onClick={handleDelete}
             className="rounded-full border border-rose-500/30 px-4 py-3 text-sm font-semibold text-rose-300 hover:bg-rose-500/10"
           >
-            מחיקה
+            {t('deleteBtn')}
           </button>
         )}
       </div>

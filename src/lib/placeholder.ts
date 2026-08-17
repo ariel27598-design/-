@@ -1,4 +1,5 @@
-// Deterministic placeholder cover art (SVG data URI) for games without a real image.
+// Deterministic placeholder cover art (SVG data URI) for games without a real photo yet.
+// Games look best with a real photo of the box - the add/edit form supports uploading one.
 
 const PALETTE = [
   ['#f97316', '#7c2d12'],
@@ -31,8 +32,14 @@ export function placeholderCover(name: string): string {
         <stop offset="100%" stop-color="${fg}"/>
       </linearGradient>
     </defs>
-    <rect width="400" height="400" fill="url(#g)" rx="24"/>
-    <text x="200" y="235" font-family="system-ui, sans-serif" font-size="160" font-weight="700" fill="#ffffff" text-anchor="middle" opacity="0.9">${initial}</text>
+    <rect width="400" height="400" fill="url(#g)" rx="28"/>
+    <g opacity="0.16" fill="#ffffff">
+      <rect x="46" y="46" width="68" height="68" rx="14" transform="rotate(-12 80 80)"/>
+      <circle cx="330" cy="70" r="34"/>
+      <circle cx="70" cy="330" r="26"/>
+      <rect x="290" y="270" width="90" height="90" rx="18" transform="rotate(18 335 315)"/>
+    </g>
+    <text x="200" y="235" font-family="system-ui, sans-serif" font-size="140" font-weight="700" fill="#ffffff" text-anchor="middle" opacity="0.95">${initial}</text>
   </svg>`;
   return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }

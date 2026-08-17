@@ -10,6 +10,7 @@ interface GameStore {
   updateGame: (id: string, updates: Partial<NewGame>) => void;
   deleteGame: (id: string) => void;
   toggleOwned: (id: string) => void;
+  setOwnedMany: (ids: Set<string>) => void;
   findByBarcode: (barcode: string) => Game | undefined;
   resetToSeed: () => void;
 }
@@ -46,6 +47,12 @@ export const useGameStore = create<GameStore>()(
       toggleOwned: (id) => {
         set((state) => ({
           games: state.games.map((g) => (g.id === id ? { ...g, owned: !g.owned } : g)),
+        }));
+      },
+
+      setOwnedMany: (ids) => {
+        set((state) => ({
+          games: state.games.map((g) => ({ ...g, owned: ids.has(g.id) })),
         }));
       },
 

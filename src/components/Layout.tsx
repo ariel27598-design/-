@@ -1,14 +1,24 @@
+import { useEffect } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-
-const NAV_ITEMS = [
-  { to: '/', label: 'בית', icon: '🏠', end: true },
-  { to: '/scan', label: 'סריקה', icon: '📷', end: false },
-  { to: '/match', label: 'שאלון', icon: '🎯', end: false },
-  { to: '/library', label: 'ספרייה', icon: '📚', end: false },
-  { to: '/games/new', label: 'הוספה', icon: '➕', end: false },
-];
+import { useT } from '../i18n/useT';
+import { useLanguageStore } from '../store/useLanguageStore';
 
 export default function Layout() {
+  const { t, lang } = useT();
+  const toggleLang = useLanguageStore((s) => s.toggleLang);
+
+  useEffect(() => {
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
+  }, [lang]);
+
+  const NAV_ITEMS = [
+    { to: '/', label: t('navHome'), icon: '🏠', end: true },
+    { to: '/find', label: t('navFind'), icon: '🎯', end: false },
+    { to: '/games/new', label: t('navAdd'), icon: '➕', end: false },
+    { to: '/library', label: t('navLibrary'), icon: '📚', end: false },
+  ];
+
   return (
     <div className="min-h-screen flex flex-col text-slate-100">
       <header className="sticky top-0 z-30 border-b border-white/10 bg-slate-950/70 backdrop-blur-md">
@@ -16,27 +26,36 @@ export default function Layout() {
           <NavLink to="/" className="flex items-center gap-2 text-lg font-bold tracking-tight">
             <span className="text-2xl">🎲</span>
             <span className="bg-gradient-to-l from-indigo-300 via-fuchsia-300 to-amber-200 bg-clip-text text-transparent">
-              שולחן משחקים
+              {t('appName')}
             </span>
           </NavLink>
-          <nav className="hidden gap-1 sm:flex">
-            {NAV_ITEMS.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                end={item.end}
-                className={({ isActive }) =>
-                  `rounded-full px-3 py-1.5 text-sm font-medium transition ${
-                    isActive
-                      ? 'bg-indigo-500/20 text-indigo-200'
-                      : 'text-slate-300 hover:bg-white/5 hover:text-white'
-                  }`
-                }
-              >
-                {item.label}
-              </NavLink>
-            ))}
-          </nav>
+          <div className="flex items-center gap-2">
+            <nav className="hidden gap-1 sm:flex">
+              {NAV_ITEMS.map((item) => (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  end={item.end}
+                  className={({ isActive }) =>
+                    `rounded-full px-3 py-1.5 text-sm font-medium transition ${
+                      isActive
+                        ? 'bg-indigo-500/20 text-indigo-200'
+                        : 'text-slate-300 hover:bg-white/5 hover:text-white'
+                    }`
+                  }
+                >
+                  {item.label}
+                </NavLink>
+              ))}
+            </nav>
+            <button
+              onClick={toggleLang}
+              className="rounded-full border border-white/15 px-3 py-1.5 text-xs font-bold text-slate-200 hover:bg-white/10"
+              aria-label="Toggle language"
+            >
+              {lang === 'he' ? 'EN' : 'עב'}
+            </button>
+          </div>
         </div>
       </header>
 

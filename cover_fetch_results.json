@@ -1,167 +1,110 @@
 {
-  "catan": {
-    "ok": true,
-    "title": "Catan",
-    "resolved_title": "Catan",
-    "ext": "jpg",
-    "bytes": 122105
-  },
-  "carcassonne": {
-    "ok": true,
-    "title": "Carcassonne (board game)",
-    "resolved_title": "Carcassonne (board game)",
-    "ext": "jpg",
-    "bytes": 168100
-  },
-  "dixit": {
-    "ok": true,
-    "title": "Dixit (card game)",
-    "resolved_title": "Dixit (board game)",
-    "ext": "jpg",
-    "bytes": 28494
-  },
-  "codenames": {
-    "ok": true,
-    "title": "Codenames (board game)",
-    "resolved_title": "Codenames (board game)",
-    "ext": "jpg",
-    "bytes": 1379184
-  },
-  "ticket-to-ride": {
-    "ok": true,
-    "title": "Ticket to Ride (board game)",
-    "resolved_title": "Ticket to Ride (board game)",
-    "ext": "jpg",
-    "bytes": 33573
-  },
-  "splendor": {
-    "ok": true,
-    "title": "Splendor (game)",
-    "resolved_title": "Splendor (game)",
-    "ext": "jpg",
-    "bytes": 20854
-  },
-  "azul": {
-    "ok": true,
-    "title": "Azul (board game)",
-    "resolved_title": "Azul (board game)",
-    "ext": "jpg",
-    "bytes": 38651
-  },
-  "pandemic": {
-    "ok": true,
-    "title": "Pandemic (board game)",
-    "resolved_title": "Pandemic (board game)",
-    "ext": "jpg",
-    "bytes": 126677
-  },
   "7-wonders": {
-    "ok": false,
-    "reason": "HTTP Error 429: Too many requests (76af2b0)",
-    "title": "7 Wonders (board game)"
+    "ok": true,
+    "title": "7 Wonders (board game)",
+    "resolved_title": "7 Wonders (board game)",
+    "ext": "png",
+    "bytes": 187531
   },
   "uno": {
-    "ok": false,
-    "reason": "HTTP Error 429: Too many requests (76af2b0)",
-    "title": "Uno (card game)"
-  },
-  "taboo": {
-    "ok": false,
-    "reason": "HTTP Error 429: Too Many Requests",
-    "title": "Taboo (game)"
-  },
-  "dobble": {
-    "ok": false,
-    "reason": "HTTP Error 429: Too Many Requests",
-    "title": "Spot It!"
-  },
-  "werewolf": {
-    "ok": false,
-    "reason": "HTTP Error 429: Too Many Requests",
-    "title": "One Night Ultimate Werewolf"
-  },
-  "monopoly": {
-    "ok": false,
-    "reason": "HTTP Error 429: Too Many Requests",
-    "title": "Monopoly (game)"
-  },
-  "bang": {
-    "ok": false,
-    "reason": "HTTP Error 429: Too Many Requests",
-    "title": "Bang! (card game)"
-  },
-  "just-one": {
-    "ok": false,
-    "reason": "HTTP Error 429: Too Many Requests",
-    "title": "Just One (game)"
-  },
-  "avalon": {
-    "ok": false,
-    "reason": "HTTP Error 429: Too Many Requests",
-    "title": "The Resistance: Avalon"
-  },
-  "wingspan": {
-    "ok": false,
-    "reason": "HTTP Error 429: Too Many Requests",
-    "title": "Wingspan (board game)"
-  },
-  "terraforming-mars": {
-    "ok": false,
-    "reason": "HTTP Error 429: Too Many Requests",
-    "title": "Terraforming Mars (board game)"
-  },
-  "love-letter": {
-    "ok": false,
-    "reason": "HTTP Error 429: Too Many Requests",
-    "title": "Love Letter (card game)"
-  },
-  "forbidden-island": {
-    "ok": false,
-    "reason": "HTTP Error 429: Too Many Requests",
-    "title": "Forbidden Island (board game)"
-  },
-  "alcatraz": {
-    "ok": false,
-    "reason": "HTTP Error 429: Too Many Requests",
-    "title": "Alcatraz: The Scapegoat"
-  },
-  "exploding-kittens": {
-    "ok": false,
-    "reason": "HTTP Error 429: Too Many Requests",
-    "title": "Exploding Kittens"
-  },
-  "colored-tumble-tower": {
-    "ok": false,
-    "reason": "HTTP Error 429: Too Many Requests",
-    "title": "Jenga"
-  },
-  "alias-israel": {
-    "ok": false,
-    "reason": "HTTP Error 429: Too Many Requests",
-    "title": "Alias (party game)"
-  },
-  "african-mancala": {
-    "ok": true,
-    "title": "Mancala",
-    "resolved_title": "Mancala",
-    "ext": "jpg",
-    "bytes": 2651549
-  },
-  "davinci-code": {
-    "ok": false,
-    "reason": "HTTP Error 429: Too Many Requests",
-    "title": "Da Vinci Code (game)"
-  },
-  "super-taki": {
     "ok": true,
     "title": "Uno (card game)",
     "resolved_title": "Uno (card game)",
     "ext": "png",
     "bytes": 120978
   },
-  "texas-holdem-poker": {
+  "taboo": {
+    "ok": true,
+    "title": "Taboo (game)",
+    "resolved_title": "Taboo (game)",
+    "ext": "jpg",
+    "bytes": 41323
+  },
+  "dobble": {
+    "ok": true,
+    "title": "Spot It!",
+    "resolved_title": "Dobble",
+    "ext": "jpg",
+    "bytes": 70304
+  },
+  "werewolf": {
+    "ok": true,
+    "title": "One Night Ultimate Werewolf",
+    "resolved_title": "Ultimate Werewolf",
+    "ext": "png",
+    "bytes": 179728
+  },
+  "monopoly": {
+    "ok": true,
+    "title": "Monopoly (game)",
+    "resolved_title": "Monopoly (game)",
+    "ext": "jpg",
+    "bytes": 499521
+  },
+  "bang": {
+    "ok": true,
+    "title": "Bang! (card game)",
+    "resolved_title": "Bang! (card game)",
+    "ext": "jpg",
+    "bytes": 24711
+  },
+  "just-one": {
     "ok": false,
-    "reason": "HTTP Error 429: Too Many Requests",
-    "title": "Texas hold 'em"
+    "reason": "HTTP Error 404: Not Found",
+    "title": "Just One (card game)"
+  },
+  "avalon": {
+    "ok": false,
+    "reason": "HTTP Error 404: Not Found",
+    "title": "Avalon (board game)"
+  },
+  "wingspan": {
+    "ok": true,
+    "title": "Wingspan (board game)",
+    "resolved_title": "Wingspan (board game)",
+    "ext": "png",
+    "bytes": 115370
+  },
+  "terraforming-mars": {
+    "ok": true,
+    "title": "Terraforming Mars (board game)",
+    "resolved_title": "Terraforming Mars (board game)",
+    "ext": "jpg",
+    "bytes": 23789
+  },
+  "love-letter": {
+    "ok": true,
+    "title": "Love Letter (card game)",
+    "resolved_title": "Love Letter (card game)",
+    "ext": "jpg",
+    "bytes": 22124
+  },
+  "forbidden-island": {
+    "ok": true,
+    "title": "Forbidden Island (board game)",
+    "resolved_title": "Forbidden Island (game)",
+    "ext": "jpg",
+    "bytes": 129882
+  },
+  "exploding-kittens": {
+    "ok": true,
+    "title": "Exploding Kittens",
+    "resolved_title": "Exploding Kittens",
+    "ext": "png",
+    "bytes": 53071
+  },
+  "colored-tumble-tower": {
+    "ok": true,
+    "title": "Jenga",
+    "resolved_title": "Jenga",
+    "ext": "png",
+    "bytes": 137553
+  },
+  "texas-holdem-poker": {
+    "ok": true,
+    "title": "Texas hold 'em",
+    "resolved_title": "Texas hold 'em",
+    "ext": "jpg",
+    "bytes": 175388
   }
 }

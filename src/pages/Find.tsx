@@ -6,6 +6,7 @@ import { useT } from '../i18n/useT';
 import type { GameMatchResult, QuestionnaireAnswers } from '../types';
 import { rankGames, rankGamesForGroup, type GroupConstraints } from '../lib/matching';
 import { buildLibraryShareUrl, decodeLibraryPayload } from '../lib/libraryShare';
+import { loadLibraryFromCloud, saveLibraryToCloud } from '../lib/libraryCloud';
 import QuestionnaireForm from '../components/QuestionnaireForm';
 import GameCard from '../components/GameCard';
 import BarcodeScanner from '../components/BarcodeScanner';
@@ -36,7 +37,10 @@ export default function Find() {
   const [showScanner, setShowScanner] = useState(false);
   const [scanFeedback, setScanFeedback] = useState<{ ok: boolean; text: string } | null>(null);
   const [savingLibraryName, setSavingLibraryName] = useState<string | null>(null);
+  const [cloudSaveStatus, setCloudSaveStatus] = useState<'idle' | 'saving' | 'ok' | 'unavailable'>('idle');
   const [shareModal, setShareModal] = useState<{ name: string; url: string } | null>(null);
+  const [loadLibraryName, setLoadLibraryName] = useState('');
+  const [loadStatus, setLoadStatus] = useState<'idle' | 'loading' | 'not-found'>('idle');
   const [answersList, setAnswersList] = useState<QuestionnaireAnswers[]>([]);
   const [results, setResults] = useState<GameMatchResult[]>([]);
   const [resultCount, setResultCount] = useState<number | 'all'>(5);
@@ -108,7 +112,7 @@ export default function Find() {
     setShowScanner(false);
   }
 
-  function handleSaveLibrary() {
+  async function handleSaveLibrary() {
     const name = savingLibraryName?.trim();
     if (!name) return;
     const ids = [...selectedIds];
@@ -116,6 +120,28 @@ export default function Find() {
     setActiveLibraryId(lib.id);
     setSavingLibraryName(null);
     setShareModal({ name, url: buildLibraryShareUrl(name, ids) });
+    setCloudSaveStatus('saving');
+    const result = await saveLibraryToCloud(name, ids);
+    setCloudSaveStatus(result.ok ? 'ok' : 'unavailable');
+  }
+
+  async function handleLoadLibrary() {
+    const name = loadLibraryName.trim();
+    if (!name) return;
+    setLoadStatus('loading');
+    const cloud = await loadLibraryFromCloud(name);
+    if (!cloud) {
+      setLoadStatus('not-found');
+      return;
+    }
+    const existingIds = new Set(games.map((g) => g.id));
+    const validIds = cloud.gameIds.filter((id) => existingIds.has(id));
+    const lib = importLibrary(cloud.name, validIds);
+    setSelectedIds(new Set(validIds));
+    setActiveLibraryId(lib.id);
+    setLoadStatus('idle');
+    setLoadLibraryName('');
+    setSharedBanner({ name: cloud.name, count: validIds.length });
   }
 
   const constraints: GroupConstraints = { playerCount, minAge: groupMinAge };
@@ -232,6 +258,30 @@ export default function Find() {
             {t('librarySharedBanner', { name: sharedBanner.name, count: sharedBanner.count })}
           </p>
         )}
+
+        <div className="flex flex-col gap-2">
+          <span className="text-sm font-semibold text-slate-200">{t('loadLibraryTitle')}</span>
+          <div className="flex gap-2">
+            <input
+              value={loadLibraryName}
+              onChange={(e) => {
+                setLoadLibraryName(e.target.value);
+                setLoadStatus('idle');
+              }}
+              onKeyDown={(e) => e.key === 'Enter' && handleLoadLibrary()}
+              placeholder={t('loadLibraryPlaceholder')}
+              className="input flex-1"
+            />
+            <button
+              onClick={handleLoadLibrary}
+              disabled={!loadLibraryName.trim() || loadStatus === 'loading'}
+              className="btn-secondary shrink-0 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              {loadStatus === 'loading' ? t('loadLibraryLoading') : t('loadLibraryBtn')}
+            </button>
+          </div>
+          {loadStatus === 'not-found' && <p className="text-xs text-amber-300">{t('loadLibraryNotFound')}</p>}
+        </div>
 
         {libraries.length > 0 && (
           <div className="flex flex-col gap-2">
@@ -374,7 +424,15 @@ export default function Find() {
         </button>
 
         {shareModal && (
-          <ShareLibraryModal name={shareModal.name} url={shareModal.url} onClose={() => setShareModal(null)} />
+          <ShareLibraryModal
+            name={shareModal.name}
+            url={shareModal.url}
+            cloudStatus={cloudSaveStatus}
+            onClose={() => {
+              setShareModal(null);
+              setCloudSaveStatus('idle');
+            }}
+          />
         )}
       </div>
     );

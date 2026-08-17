@@ -5,10 +5,11 @@ import { useT } from '../i18n/useT';
 interface Props {
   name: string;
   url: string;
+  cloudStatus?: 'idle' | 'saving' | 'ok' | 'unavailable';
   onClose: () => void;
 }
 
-export default function ShareLibraryModal({ name, url, onClose }: Props) {
+export default function ShareLibraryModal({ name, url, cloudStatus = 'idle', onClose }: Props) {
   const { t } = useT();
   const [qrDataUrl, setQrDataUrl] = useState('');
   const [copied, setCopied] = useState(false);
@@ -45,6 +46,14 @@ export default function ShareLibraryModal({ name, url, onClose }: Props) {
         <div className="break-all rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-slate-300" dir="ltr">
           {url}
         </div>
+
+        {cloudStatus !== 'idle' && (
+          <p className="text-xs text-slate-400">
+            {cloudStatus === 'saving' && t('cloudSaving')}
+            {cloudStatus === 'ok' && t('cloudSaveOk')}
+            {cloudStatus === 'unavailable' && t('cloudSaveUnavailable')}
+          </p>
+        )}
 
         <div className="flex gap-2">
           <button onClick={copyLink} className="flex-1 rounded-full bg-indigo-500 py-2.5 text-sm font-bold text-white hover:bg-indigo-400">

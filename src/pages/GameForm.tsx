@@ -4,10 +4,12 @@ import { useGameStore } from '../store/useGameStore';
 import { ALL_CATEGORIES, type Category, type NewGame } from '../types';
 import { placeholderCover } from '../lib/placeholder';
 import { lookupProductByBarcode } from '../lib/barcodeLookup';
+import { recognizeText } from '../lib/ocr';
 import { useT } from '../i18n/useT';
 import CategoryPill from '../components/CategoryPill';
 
 type LookupStatus = 'idle' | 'loading' | 'found' | 'not-found';
+type OcrStatus = 'idle' | 'recognizing' | 'done' | 'no-text';
 
 interface Props {
   mode: 'create' | 'edit';
@@ -57,6 +59,7 @@ export default function GameForm({ mode }: Props) {
   const [barcodeInput, setBarcodeInput] = useState('');
   const [imagePreview, setImagePreview] = useState(existing?.imageUrl ?? '');
   const [lookupStatus, setLookupStatus] = useState<LookupStatus>('idle');
+  const [ocrStatus, setOcrStatus] = useState<OcrStatus>('idle');
 
   useEffect(() => {
     if (existing) {
@@ -134,6 +137,36 @@ export default function GameForm({ mode }: Props) {
     reader.readAsDataURL(file);
   }
 
+  async function handleBoxPhoto(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result as string;
+      set('imageUrl', dataUrl);
+      setImagePreview(dataUrl);
+    };
+    reader.readAsDataURL(file);
+
+    setOcrStatus('recognizing');
+    const text = await recognizeText(file);
+    if (!text) {
+      setOcrStatus('no-text');
+      return;
+    }
+    const lines = text.split('\n').map((l) => l.trim()).filter(Boolean);
+    setForm((f) => {
+      const currentName = typeof f.name === 'string' ? f.name.trim() : '';
+      const currentDesc = typeof f.description === 'string' ? f.description.trim() : '';
+      const name = currentName || lines[0] || currentName;
+      const remainder = (currentName ? lines : lines.slice(1)).join('\n');
+      const description = currentDesc || remainder || text;
+      return { ...f, name, description };
+    });
+    setOcrStatus('done');
+  }
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const name = typeof form.name === 'string' ? form.name.trim() : '';
@@ -185,13 +218,27 @@ export default function GameForm({ mode }: Props) {
           />
         </Field>
 
-        <Field label={t('coverImageLabel')}>
+        <Field label={t('scanBoxPhotoLabel')}>
           <div className="flex items-center gap-3">
             <img
               src={imagePreview || placeholderCover(nameValue || '?')}
               alt=""
               className="h-16 w-16 rounded-xl object-cover"
             />
+            <div className="flex flex-1 flex-col gap-2">
+              <label className="btn-secondary cursor-pointer self-start text-sm">
+                {t('scanBoxPhotoBtn')}
+                <input type="file" accept="image/*" capture="environment" onChange={handleBoxPhoto} className="hidden" />
+              </label>
+              {ocrStatus === 'recognizing' && <span className="text-xs text-slate-400">{t('ocrRecognizing')}</span>}
+              {ocrStatus === 'done' && <span className="text-xs text-emerald-300">{t('ocrDone')}</span>}
+              {ocrStatus === 'no-text' && <span className="text-xs text-amber-300">{t('ocrNoText')}</span>}
+            </div>
+          </div>
+        </Field>
+
+        <Field label={t('coverImageLabel')}>
+          <div className="flex items-center gap-3">
             <div className="flex flex-1 flex-col gap-2">
               <input
                 value={form.imageUrl}

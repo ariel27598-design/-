@@ -1,5 +1,5 @@
 import type { NewGame } from '../types';
-import { placeholderCover } from '../lib/placeholder';
+import { coverUrl, placeholderCover } from '../lib/placeholder';
 
 function ytSearch(query: string): string {
   return `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
@@ -15,7 +15,7 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'catan',
     name: { he: 'קטאן', en: 'Catan' },
-    imageUrl: placeholderCover('קטאן'),
+    imageUrl: coverUrl('catan', 'jpg'),
     description: {
       he: 'משחק מסחר ובנייה: אוספים משאבים מאריחי משושה, סוחרים עם שאר השחקנים ובונים כפרים, ערים וכבישים כדי להגיע ראשונים ל-10 נקודות ניצחון.',
       en: 'A trading and building game: gather resources from hex tiles, trade with other players, and build settlements, cities and roads to be the first to reach 10 victory points.',
@@ -35,7 +35,7 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'carcassonne',
     name: { he: 'קרקסון', en: 'Carcassonne' },
-    imageUrl: placeholderCover('קרקסון'),
+    imageUrl: coverUrl('carcassonne', 'jpg'),
     description: {
       he: 'בונים נוף מאריחים מצוירים - דרכים, ערים ומנזרים - ומניחים פֵּיאונים כדי לתבוע בעלות על אזורים ולצבור נקודות.',
       en: 'Build a landscape from illustrated tiles - roads, cities and cloisters - and place meeples to claim areas and score points.',
@@ -55,7 +55,7 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'dixit',
     name: { he: 'דיקסיט', en: 'Dixit' },
-    imageUrl: placeholderCover('דיקסיט'),
+    imageUrl: coverUrl('dixit', 'jpg'),
     description: {
       he: 'המספר בוחר קלף ונותן לו רמז מעורפל; שאר השחקנים בוחרים קלף שמתאים לרמז וצריך לנחש מי הקלף המקורי - איזון בין ברור מדי למופשט מדי.',
       en: 'The storyteller picks a card and gives a vague clue; everyone else picks a card that fits the clue, and players guess the original - a balance between too obvious and too obscure.',
@@ -75,7 +75,7 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'codenames',
     name: { he: 'קודניימס', en: 'Codenames' },
-    imageUrl: placeholderCover('קודניימס'),
+    imageUrl: coverUrl('codenames', 'jpg'),
     description: {
       he: 'שני מרגלים-ראשיים נותנים רמז במילה אחת שיעזור לקבוצה שלהם לנחש כמה כרטיסים על השולחן שייכים להם - בלי לגעת בכרטיס המתנקש.',
       en: 'Two spymasters give one-word clues to help their team guess which cards on the table belong to them - without touching the assassin card.',
@@ -95,7 +95,7 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'ticket-to-ride',
     name: { he: 'רכבות אמריקה', en: 'Ticket to Ride' },
-    imageUrl: placeholderCover('רכבות אמריקה'),
+    imageUrl: coverUrl('ticket-to-ride', 'jpg'),
     description: {
       he: 'אוספים קלפי קרונות בצבעים ומניחים אותם על מפת ארה"ב כדי לכבוש מסלולי רכבת בין ערים, ומשלימים יעדים סודיים לנקודות בונוס.',
       en: 'Collect colored train cards and claim railway routes between cities on a map of the US, completing secret destination tickets for bonus points.',
@@ -115,7 +115,7 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'splendor',
     name: { he: 'ספלנדור', en: 'Splendor' },
-    imageUrl: placeholderCover('ספלנדור'),
+    imageUrl: coverUrl('splendor', 'jpg'),
     description: {
       he: 'בונים אימפריה של סוחרי תכשיטים: קונים אבני חן כדי לרכוש קלפי פיתוח שמעניקים הנחות והכנסה, ומושכים אצילים לביקור.',
       en: 'Build a gem-trading empire: buy gems to acquire development cards that grant discounts and income, and attract visiting nobles.',
@@ -135,7 +135,7 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'azul',
     name: { he: 'אזול', en: 'Azul' },
-    imageUrl: placeholderCover('אזול'),
+    imageUrl: coverUrl('azul', 'jpg'),
     description: {
       he: 'בוחרים אריחי קרמיקה צבעוניים ומסדרים אותם על לוח אישי כדי ליצור דפוסים ולצבור נקודות - קלף ללמידה, עמוק לשליטה.',
       en: 'Draft colorful ceramic tiles and arrange them on your personal board to form patterns and score points - easy to learn, deep to master.',
@@ -155,7 +155,7 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'pandemic',
     name: { he: 'מגפה', en: 'Pandemic' },
-    imageUrl: placeholderCover('מגפה'),
+    imageUrl: coverUrl('pandemic', 'jpg'),
     description: {
       he: 'משחק שיתופי: כל השחקנים נלחמים יחד כדי לעצור ארבע מגפות עולמיות לפני שיצאו משליטה, כל אחד עם תפקיד וכוחות ייחודיים.',
       en: 'A cooperative game: all players work together to stop four global outbreaks before they spiral out of control, each with a unique role and powers.',
@@ -175,7 +175,7 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: '7-wonders',
     name: { he: '7 פלאות', en: '7 Wonders' },
-    imageUrl: placeholderCover('7 פלאות'),
+    imageUrl: coverUrl('7-wonders', 'png'),
     description: {
       he: 'בונים ציוויליזציה עתיקה על ידי בחירת קלפים ומסירתם הלאה (drafting): מבנים, צבא, מסחר ומדע - שלושה עידנים של פיתוח.',
       en: 'Build an ancient civilization by drafting cards: buildings, military, trade and science - three ages of development.',
@@ -195,7 +195,7 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'uno',
     name: { he: 'אונו', en: 'Uno' },
-    imageUrl: placeholderCover('אונו'),
+    imageUrl: coverUrl('uno', 'png'),
     description: {
       he: 'משחק קלפים קלאסי - משחררים את כל הקלפים ביד על ידי התאמת צבע או מספר, עם קלפי פעולה שהופכים סדר, מדלגים או מכריחים שליפה.',
       en: 'A classic card game - shed all the cards in your hand by matching color or number, with action cards that reverse order, skip turns, or force draws.',
@@ -215,7 +215,7 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'taboo',
     name: { he: 'טאבו', en: 'Taboo' },
-    imageUrl: placeholderCover('טאבו'),
+    imageUrl: coverUrl('taboo', 'jpg'),
     description: {
       he: 'מסבירים לחברי הקבוצה מילה על הכרטיס בלי להשתמש במילים האסורות הרשומות עליו, לפני שהזמן נגמר או שהיריבים תופסים אתכם.',
       en: 'Explain the word on the card to your team without using the forbidden words listed on it, before time runs out or the other team catches you.',
@@ -235,7 +235,7 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'dobble',
     name: { he: 'דובל', en: 'Dobble (Spot It!)' },
-    imageUrl: placeholderCover('דובל'),
+    imageUrl: coverUrl('dobble', 'jpg'),
     description: {
       he: 'בכל שני קלפים יש בדיוק סמל אחד משותף - מי שמזהה ראשון וצועק אותו זוכה בקלף. מהיר, פשוט ומתאים לכל הגילאים.',
       en: 'Any two cards share exactly one matching symbol - whoever spots and calls it first wins the card. Fast, simple, and fits any age.',
@@ -255,7 +255,7 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'werewolf',
     name: { he: 'וורוולף', en: 'Werewolf' },
-    imageUrl: placeholderCover('וורוולף'),
+    imageUrl: coverUrl('werewolf', 'png'),
     description: {
       he: 'משחק תפקידים חברתי - הכפר מנסה לחשוף את הזאבים הנסתרים בטרם יטרפו את כולם, תוך דיונים, שקרים והצבעות בכל לילה ויום.',
       en: 'A social deduction game - the village tries to uncover the hidden werewolves before they devour everyone, through discussion, lies and votes each night and day.',
@@ -275,7 +275,7 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'monopoly',
     name: { he: 'מונופול', en: 'Monopoly' },
-    imageUrl: placeholderCover('מונופול'),
+    imageUrl: coverUrl('monopoly', 'jpg'),
     description: {
       he: 'קונים רחובות, גובים שכירות ובונים בתים ומלונות מסביב ללוח כדי להפוך למונופול ולהוציא את שאר השחקנים מהמשחק.',
       en: 'Buy streets, collect rent, and build houses and hotels around the board to create a monopoly and drive the other players out of the game.',
@@ -295,7 +295,7 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'bang',
     name: { he: 'בנג', en: 'Bang!' },
-    imageUrl: placeholderCover('בנג'),
+    imageUrl: coverUrl('bang', 'jpg'),
     description: {
       he: 'משחק תפקידים בהשראת מערבונים - שריף, סגנים, פורעי חוק ובוגד, כל אחד עם מטרה נסתרת ונשק קלפים כדי לחסל את היריבים.',
       en: 'A Wild West-inspired hidden-role game - sheriff, deputies, outlaws and a renegade, each with a secret goal and card-based guns to take down opponents.',
@@ -355,7 +355,7 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'wingspan',
     name: { he: 'כנפיים', en: 'Wingspan' },
-    imageUrl: placeholderCover('כנפיים'),
+    imageUrl: coverUrl('wingspan', 'png'),
     description: {
       he: 'בונים רזרבת ציפורים משגשגת - כל ציפור מפעילה שרשראות של פעולות, אוספים מזון וביצים ומנקדים לפי יעדים וקלפי בונוס.',
       en: 'Build a thriving bird reserve - each bird triggers chains of actions; collect food and eggs and score by goals and bonus cards.',
@@ -375,7 +375,7 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'terraforming-mars',
     name: { he: 'טרהפורמינג מארס', en: 'Terraforming Mars' },
-    imageUrl: placeholderCover('טרהפורמינג מארס'),
+    imageUrl: coverUrl('terraforming-mars', 'jpg'),
     description: {
       he: 'תאגידים מתחרים על הפיכת מאדים לכוכב בר-מגורים - מעלים חמצן, טמפרטורה ואוקיינוסים תוך ניהול משאבים מורכב ועצי טכנולוגיה.',
       en: 'Corporations compete to make Mars habitable - raise oxygen, temperature and oceans while managing complex resources and tech trees.',
@@ -395,7 +395,7 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'love-letter',
     name: { he: 'לב במרוץ', en: 'Love Letter' },
-    imageUrl: placeholderCover('לב במרוץ'),
+    imageUrl: coverUrl('love-letter', 'jpg'),
     description: {
       he: 'משחק קלפים זעיר עם 16 קלפים בלבד - כל תור שולפים קלף ומשחקים אחד, מנסים לנחש או לחסל יריבים כדי להישאר האחרונים.',
       en: 'A tiny card game with just 16 cards - each turn draw and play one card, trying to guess or eliminate opponents to be the last one standing.',
@@ -415,7 +415,7 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'forbidden-island',
     name: { he: 'האי האסור', en: 'Forbidden Island' },
-    imageUrl: placeholderCover('האי האסור'),
+    imageUrl: coverUrl('forbidden-island', 'jpg'),
     description: {
       he: 'משחק שיתופי משפחתי - צוות הרפתקנים אוסף ארבעה אוצרות מאי טובע לפני שהוא שוקע כולו מתחת למים.',
       en: 'A family cooperative game - a team of adventurers collects four treasures from a sinking island before it disappears underwater.',
@@ -455,7 +455,7 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'exploding-kittens',
     name: { he: 'חתלטים מתפוצצים', en: 'Exploding Kittens' },
-    imageUrl: placeholderCover('חתלטים מתפוצצים'),
+    imageUrl: coverUrl('exploding-kittens', 'png'),
     description: {
       he: 'משחק קלפים מהיר: שולפים קלפים בתורות ומנסים לא להיתקל בקלף "חתול מתפוצץ" - עם קלפי הפרעה שמשנים את סדר המשחק ומצילים אתכם ברגע האחרון.',
       en: 'A fast card game: draw cards in turns and try not to pull an "exploding kitten" - with disruption cards that shuffle the turn order and save you at the last second.',
@@ -475,7 +475,7 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'colored-tumble-tower',
     name: { he: 'מפולת לבנים צבעונית', en: 'Colored Tumble Tower' },
-    imageUrl: placeholderCover('מפולת לבנים צבעונית'),
+    imageUrl: coverUrl('colored-tumble-tower', 'png'),
     description: {
       he: 'מגדל לבנים בסגנון ג\'נגה עם קוביית צבעים: מגלגלים ומוציאים לבנה בצבע שנקבע בלי להפיל את המגדל - מי שמפיל מפסיד.',
       en: "A Jenga-style tumbling tower with a color die: roll and pull a block of the rolled color without toppling the tower - whoever topples it loses.",
@@ -515,7 +515,7 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'african-mancala',
     name: { he: 'מנקלה אפריקאית', en: 'African Mancala' },
-    imageUrl: placeholderCover('מנקלה אפריקאית'),
+    imageUrl: coverUrl('african-mancala', 'jpg'),
     description: {
       he: 'משחק אסטרטגיה מסורתי לשני שחקנים: מזיזים אבנים בין הגומות בלוח כדי לאסוף הכי הרבה לתוך המחסן שלכם.',
       en: 'A traditional two-player strategy game: move stones between the pits on the board to collect the most into your store.',
@@ -575,7 +575,7 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'texas-holdem-poker',
     name: { he: 'פוקר טקסס הולדם', en: "Texas Hold'em Poker" },
-    imageUrl: placeholderCover('פוקר טקסס הולדם'),
+    imageUrl: coverUrl('texas-holdem-poker', 'jpg'),
     description: {
       he: 'סט פוקר עם ז\'יטונים וקלפים: כל שחקן מקבל שני קלפים אישיים, ויחד עם חמישה קלפים משותפים על השולחן מרכיבים את היד הכי טובה.',
       en: 'A poker set with chips and cards: each player gets two private cards, combining with five shared cards on the table to make the best hand.',

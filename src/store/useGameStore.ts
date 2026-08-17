@@ -64,12 +64,20 @@ export const useGameStore = create<GameStore>()(
       migrate: (persisted, version) => (version < 2 ? { games: seedWithIds() } : (persisted as GameStore)),
       // New seed games added later should reach people who already have
       // persisted state, without discarding anything they've added/edited.
+      // Seed games still on their auto-generated placeholder cover also pick
+      // up a newer real cover image if one was added since.
       merge: (persisted, current) => {
         const persistedState = persisted as Partial<GameStore> | undefined;
         if (!persistedState || !Array.isArray(persistedState.games)) return current;
+        const currentById = new Map(current.games.map((g) => [g.id, g]));
         const existingIds = new Set(persistedState.games.map((g) => g.id));
+        const upgradedGames = persistedState.games.map((g) => {
+          if (!g.imageUrl.startsWith('data:image/svg+xml')) return g;
+          const latest = currentById.get(g.id);
+          return latest && !latest.imageUrl.startsWith('data:image/svg+xml') ? { ...g, imageUrl: latest.imageUrl } : g;
+        });
         const newSeeds = current.games.filter((g) => !existingIds.has(g.id));
-        return { ...current, ...persistedState, games: [...persistedState.games, ...newSeeds] };
+        return { ...current, ...persistedState, games: [...upgradedGames, ...newSeeds] };
       },
     },
   ),

@@ -1,6 +1,11 @@
 // Deterministic placeholder cover art (SVG data URI) for games without a real photo yet.
 // Games look best with a real photo of the box - the add/edit form supports uploading one.
 
+/** URL for a bundled cover image in public/covers/, respecting the configured base path. */
+export function coverUrl(id: string, ext: string): string {
+  return `${import.meta.env.BASE_URL}covers/${id}.${ext}`;
+}
+
 const PALETTE = [
   ['#f97316', '#7c2d12'],
   ['#0ea5e9', '#0c4a6e'],

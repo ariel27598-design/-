@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { useGameStore } from '../store/useGameStore';
 import { useLibraryStore, type GameLibrary } from '../store/useLibraryStore';
 import { useT } from '../i18n/useT';
@@ -9,7 +9,6 @@ import { buildLibraryShareUrl, decodeLibraryPayload } from '../lib/libraryShare'
 import { loadLibraryFromCloud, saveLibraryToCloud } from '../lib/libraryCloud';
 import QuestionnaireForm from '../components/QuestionnaireForm';
 import GameCard from '../components/GameCard';
-import BarcodeScanner from '../components/BarcodeScanner';
 import ShareLibraryModal from '../components/ShareLibraryModal';
 import NumberField from '../components/NumberField';
 
@@ -20,12 +19,12 @@ const RESULT_COUNT_OPTIONS = [3, 5, 10] as const;
 export default function Find() {
   const { t } = useT();
   const games = useGameStore((s) => s.games);
-  const findByBarcode = useGameStore((s) => s.findByBarcode);
   const setOwnedMany = useGameStore((s) => s.setOwnedMany);
   const libraries = useLibraryStore((s) => s.libraries);
   const saveLibrary = useLibraryStore((s) => s.saveLibrary);
   const importLibrary = useLibraryStore((s) => s.importLibrary);
   const deleteLibrary = useLibraryStore((s) => s.deleteLibrary);
+  const location = useLocation();
 
   const [step, setStep] = useState<Step>('setup');
   const [mode, setMode] = useState<Mode>('solo');
@@ -35,8 +34,6 @@ export default function Find() {
   const [activeLibraryId, setActiveLibraryId] = useState<string | null>(null);
   const [sharedBanner, setSharedBanner] = useState<{ name: string; count: number } | null>(null);
   const [shelfQuery, setShelfQuery] = useState('');
-  const [showScanner, setShowScanner] = useState(false);
-  const [scanFeedback, setScanFeedback] = useState<{ ok: boolean; text: string } | null>(null);
   const [savingLibraryName, setSavingLibraryName] = useState<string | null>(null);
   const [cloudSaveStatus, setCloudSaveStatus] = useState<'idle' | 'saving' | 'ok' | 'unavailable'>('idle');
   const [shareModal, setShareModal] = useState<{ name: string; url: string } | null>(null);
@@ -46,6 +43,12 @@ export default function Find() {
   const [results, setResults] = useState<GameMatchResult[]>([]);
   const [resultCount, setResultCount] = useState<number | 'all'>(5);
   const [searchParams, setSearchParams] = useSearchParams();
+
+  function applyLibrary(lib: GameLibrary) {
+    const existingIds = new Set(games.map((g) => g.id));
+    setSelectedIds(new Set(lib.gameIds.filter((id) => existingIds.has(id))));
+    setActiveLibraryId(lib.id);
+  }
 
   // Import a shared library from the "lib" query param, if this link was opened from one.
   useEffect(() => {
@@ -64,6 +67,15 @@ export default function Find() {
       next.delete('lib');
       return next;
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Preselect a saved library when arriving via a "use this library" link from the Library page.
+  useEffect(() => {
+    const preselectId = (location.state as { libraryId?: string } | null)?.libraryId;
+    if (!preselectId) return;
+    const lib = libraries.find((l) => l.id === preselectId);
+    if (lib) applyLibrary(lib);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -88,29 +100,10 @@ export default function Find() {
     });
   }
 
-  function applyLibrary(lib: GameLibrary) {
-    const existingIds = new Set(games.map((g) => g.id));
-    setSelectedIds(new Set(lib.gameIds.filter((id) => existingIds.has(id))));
-    setActiveLibraryId(lib.id);
-  }
-
   function handleDeleteLibrary(id: string) {
     if (!confirm(t('libraryDeleteBtn') + '?')) return;
     deleteLibrary(id);
     if (activeLibraryId === id) setActiveLibraryId(null);
-  }
-
-  function handleScanResult(code: string) {
-    const game = findByBarcode(code);
-    if (game) {
-      setActiveLibraryId(null);
-      setSelectedIds((prev) => new Set(prev).add(game.id));
-      const name = typeof game.name === 'string' ? game.name : game.name.he;
-      setScanFeedback({ ok: true, text: t('scanFoundAdded', { name }) });
-    } else {
-      setScanFeedback({ ok: false, text: t('scanNotFound') });
-    }
-    setShowScanner(false);
   }
 
   async function handleSaveLibrary() {
@@ -182,6 +175,68 @@ export default function Find() {
           <p className="text-sm text-slate-400">{t('findSubtitle')}</p>
         </div>
 
+        {sharedBanner && (
+          <p className="rounded-xl border border-indigo-400/30 bg-indigo-500/10 px-3 py-2 text-sm font-semibold text-indigo-200">
+            {t('librarySharedBanner', { name: sharedBanner.name, count: sharedBanner.count })}
+          </p>
+        )}
+
+        <div className="flex flex-col gap-2">
+          <span className="text-sm font-semibold text-slate-200">{t('whichGamesTitle')}</span>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => setActiveLibraryId(null)}
+              className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
+                activeLibraryId === null
+                  ? 'bg-indigo-500 text-white'
+                  : 'border border-white/10 bg-white/5 text-slate-300 hover:bg-white/10'
+              }`}
+            >
+              {t('adHocOption')}
+            </button>
+            {libraries.map((lib) => (
+              <span
+                key={lib.id}
+                className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition ${
+                  activeLibraryId === lib.id
+                    ? 'bg-indigo-500 text-white'
+                    : 'border border-white/10 bg-white/5 text-slate-300 hover:bg-white/10'
+                }`}
+              >
+                <button onClick={() => applyLibrary(lib)}>
+                  {lib.name} · {t('libraryGamesCount', { count: lib.gameIds.length })}
+                </button>
+                <button onClick={() => handleDeleteLibrary(lib.id)} className="text-current opacity-60 hover:opacity-100">
+                  ✕
+                </button>
+              </span>
+            ))}
+          </div>
+          <div className="flex gap-2">
+            <input
+              value={loadLibraryName}
+              onChange={(e) => {
+                setLoadLibraryName(e.target.value);
+                setLoadStatus('idle');
+              }}
+              onKeyDown={(e) => e.key === 'Enter' && handleLoadLibrary()}
+              placeholder={t('loadLibraryPlaceholder')}
+              className="input flex-1"
+            />
+            <button
+              onClick={handleLoadLibrary}
+              disabled={!loadLibraryName.trim() || loadStatus === 'loading'}
+              className="btn-secondary shrink-0 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              {loadStatus === 'loading' ? t('loadLibraryLoading') : t('loadLibraryBtn')}
+            </button>
+          </div>
+          {loadStatus === 'not-found' && <p className="text-xs text-amber-300">{t('loadLibraryNotFound')}</p>}
+          {activeLibraryId !== null && (
+            <p className="text-xs text-emerald-300">{t('libraryActiveHint', { count: selectedIds.size })}</p>
+          )}
+        </div>
+
         <div className="flex flex-col gap-2">
           <span className="text-sm font-semibold text-slate-200">{t('whoFillsTitle')}</span>
           <div className="grid grid-cols-2 gap-3">
@@ -240,71 +295,6 @@ export default function Find() {
           <p className="text-sm text-slate-400">{t('shelfSubtitle')}</p>
         </div>
 
-        {sharedBanner && (
-          <p className="rounded-xl border border-indigo-400/30 bg-indigo-500/10 px-3 py-2 text-sm font-semibold text-indigo-200">
-            {t('librarySharedBanner', { name: sharedBanner.name, count: sharedBanner.count })}
-          </p>
-        )}
-
-        <div className="flex flex-col gap-2">
-          <span className="text-sm font-semibold text-slate-200">{t('loadLibraryTitle')}</span>
-          <div className="flex gap-2">
-            <input
-              value={loadLibraryName}
-              onChange={(e) => {
-                setLoadLibraryName(e.target.value);
-                setLoadStatus('idle');
-              }}
-              onKeyDown={(e) => e.key === 'Enter' && handleLoadLibrary()}
-              placeholder={t('loadLibraryPlaceholder')}
-              className="input flex-1"
-            />
-            <button
-              onClick={handleLoadLibrary}
-              disabled={!loadLibraryName.trim() || loadStatus === 'loading'}
-              className="btn-secondary shrink-0 disabled:cursor-not-allowed disabled:opacity-40"
-            >
-              {loadStatus === 'loading' ? t('loadLibraryLoading') : t('loadLibraryBtn')}
-            </button>
-          </div>
-          {loadStatus === 'not-found' && <p className="text-xs text-amber-300">{t('loadLibraryNotFound')}</p>}
-        </div>
-
-        {libraries.length > 0 && (
-          <div className="flex flex-col gap-2">
-            <span className="text-sm font-semibold text-slate-200">{t('myLibrariesTitle')}</span>
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => setActiveLibraryId(null)}
-                className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
-                  activeLibraryId === null
-                    ? 'bg-indigo-500 text-white'
-                    : 'border border-white/10 bg-white/5 text-slate-300 hover:bg-white/10'
-                }`}
-              >
-                {t('adHocOption')}
-              </button>
-              {libraries.map((lib) => (
-                <span
-                  key={lib.id}
-                  className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition ${
-                    activeLibraryId === lib.id
-                      ? 'bg-indigo-500 text-white'
-                      : 'border border-white/10 bg-white/5 text-slate-300 hover:bg-white/10'
-                  }`}
-                >
-                  <button onClick={() => applyLibrary(lib)}>
-                    {lib.name} · {t('libraryGamesCount', { count: lib.gameIds.length })}
-                  </button>
-                  <button onClick={() => handleDeleteLibrary(lib.id)} className="text-current opacity-60 hover:opacity-100">
-                    ✕
-                  </button>
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
         <div className="flex gap-2">
           <input
             value={shelfQuery}
@@ -312,24 +302,7 @@ export default function Find() {
             placeholder={t('shelfSearchPlaceholder')}
             className="input flex-1"
           />
-          <button
-            type="button"
-            onClick={() => {
-              setShowScanner((v) => !v);
-              setScanFeedback(null);
-            }}
-            className="btn-secondary shrink-0 whitespace-nowrap"
-          >
-            {t('scanToFind')}
-          </button>
         </div>
-
-        {showScanner && <BarcodeScanner onResult={handleScanResult} />}
-        {scanFeedback && (
-          <p className={`text-sm font-semibold ${scanFeedback.ok ? 'text-emerald-300' : 'text-amber-300'}`}>
-            {scanFeedback.text}
-          </p>
-        )}
 
         <div className="flex items-center justify-between text-xs text-slate-400">
           <span className="font-semibold text-slate-200">{t('selectedCount', { count: selectedIds.size })}</span>

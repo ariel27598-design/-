@@ -9,8 +9,6 @@ export { ALL_CATEGORIES } from '../i18n/categories';
 export interface Game {
   id: string;
   name: LocalizedText;
-  /** One or more barcodes (UPC/EAN) associated with printings of this game. */
-  barcodes: string[];
   imageUrl: string;
   /** Short explanation of how the game is played. */
   description: LocalizedText;

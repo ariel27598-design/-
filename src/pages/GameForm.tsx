@@ -7,7 +7,6 @@ import { recognizeText } from '../lib/ocr';
 import { useT } from '../i18n/useT';
 import CategoryPill from '../components/CategoryPill';
 import NumberField from '../components/NumberField';
-import BarcodeScanner from '../components/BarcodeScanner';
 
 type OcrStatus = 'idle' | 'recognizing' | 'done' | 'no-text';
 
@@ -18,7 +17,6 @@ interface Props {
 function emptyForm(): NewGame {
   return {
     name: '',
-    barcodes: [],
     imageUrl: '',
     description: '',
     videoUrl: '',
@@ -74,8 +72,6 @@ export default function GameForm({ mode }: Props) {
   const [imagePreview, setImagePreview] = useState(existing?.imageUrl ?? '');
   const [coverOcrStatus, setCoverOcrStatus] = useState<OcrStatus>('idle');
   const [instructionsOcrStatus, setInstructionsOcrStatus] = useState<OcrStatus>('idle');
-  const [showBarcodeSection, setShowBarcodeSection] = useState(false);
-  const [showBarcodeScanner, setShowBarcodeScanner] = useState(false);
 
   useEffect(() => {
     if (existing) {
@@ -102,15 +98,6 @@ export default function GameForm({ mode }: Props) {
       ...f,
       categories: f.categories.includes(cat) ? f.categories.filter((c) => c !== cat) : [...f.categories, cat],
     }));
-  }
-
-  function removeBarcode(code: string) {
-    set('barcodes', form.barcodes.filter((b) => b !== code));
-  }
-
-  function handleBarcodeScanResult(code: string) {
-    setForm((f) => (f.barcodes.includes(code) ? f : { ...f, barcodes: [...f.barcodes, code] }));
-    setShowBarcodeScanner(false);
   }
 
   function handleImageFile(e: React.ChangeEvent<HTMLInputElement>) {
@@ -300,48 +287,6 @@ export default function GameForm({ mode }: Props) {
             placeholder="https://youtube.com/watch?v=..."
             className="input"
           />
-        </Field>
-
-        <Field label="">
-          <button
-            type="button"
-            onClick={() => setShowBarcodeSection((v) => !v)}
-            className="self-start text-xs font-semibold text-indigo-300 hover:text-indigo-200"
-          >
-            {showBarcodeSection ? t('hideBarcodeSection') : t('showBarcodeSection')}
-          </button>
-          {showBarcodeSection && (
-            <div className="mt-2 flex flex-col gap-2">
-              <p className="text-xs text-slate-500">{t('barcodeOptionalHint')}</p>
-              {form.barcodes.length > 0 && (
-                <div className="flex flex-wrap gap-1.5">
-                  {form.barcodes.map((code) => (
-                    <span
-                      key={code}
-                      className="flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-1 text-xs text-slate-200"
-                      dir="ltr"
-                    >
-                      {code}
-                      <button type="button" onClick={() => removeBarcode(code)} className="text-slate-400 hover:text-rose-300">
-                        ✕
-                      </button>
-                    </span>
-                  ))}
-                </div>
-              )}
-              {showBarcodeScanner ? (
-                <BarcodeScanner onResult={handleBarcodeScanResult} />
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => setShowBarcodeScanner(true)}
-                  className="btn-secondary self-start"
-                >
-                  {t('scanBarcodeAddBtn')}
-                </button>
-              )}
-            </div>
-          )}
         </Field>
 
         <Field label="">

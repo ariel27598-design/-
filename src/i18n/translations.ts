@@ -58,12 +58,10 @@ export const dict = {
   // Shelf step
   shelfTitle: { he: 'אילו משחקים נמצאים איתכם?', en: 'Which games do you have with you?' },
   shelfSubtitle: {
-    he: 'בחרו מהרשימה, חפשו לפי שם, או סרקו ברקוד שעל קופסת המשחק כדי לאתר אותו מהר. הבחירה נשמרת רק במכשיר הזה.',
-    en: 'Pick from the list, search by name, or scan the barcode on a box to find it fast. Your selection is saved only on this device.',
+    he: 'בחרו מהרשימה או חפשו לפי שם. הבחירה נשמרת רק במכשיר הזה.',
+    en: 'Pick from the list or search by name. Your selection is saved only on this device.',
   },
   shelfSearchPlaceholder: { he: 'חיפוש לפי שם...', en: 'Search by name...' },
-  scanToFind: { he: '📷 סרקו ברקוד', en: '📷 Scan a barcode' },
-  stopScan: { he: 'סגירת מצלמה', en: 'Close camera' },
   selectAll: { he: 'בחרו הכול', en: 'Select all' },
   clearAll: { he: 'נקו בחירה', en: 'Clear selection' },
   selectedCount: { he: '{{count}} משחקים נבחרו', en: '{{count}} games selected' },
@@ -74,6 +72,8 @@ export const dict = {
 
   // Libraries (named, shareable subsets of the catalog)
   myLibrariesTitle: { he: 'ספריות שמורות', en: 'Saved libraries' },
+  whichGamesTitle: { he: 'אילו משחקים?', en: 'Which games?' },
+  libraryActiveHint: { he: '✓ נבחרה ספרייה - {{count}} משחקים. אפשר עדיין לדייק בשלב הבא.', en: '✓ Library selected - {{count}} games. You can still fine-tune it on the next step.' },
   adHocOption: { he: 'בחירה חופשית', en: 'Free pick' },
   librarySharedBanner: { he: '📚 נטענה ספרייה משותפת: "{{name}}" ({{count}} משחקים)', en: '📚 Loaded shared library: "{{name}}" ({{count}} games)' },
   libraryGamesCount: { he: '{{count}} משחקים', en: '{{count}} games' },
@@ -168,7 +168,6 @@ export const dict = {
   howToPlay: { he: 'איך משחקים', en: 'How to play' },
   explainerVideo: { he: 'סרטון הסבר', en: 'Explainer video' },
   watchVideo: { he: 'צפייה בסרטון הסבר ↗', en: 'Watch explainer video ↗' },
-  barcodesLabel: { he: 'ברקודים', en: 'Barcodes' },
 
   // Game form
   editGameTitle: { he: 'עריכת משחק', en: 'Edit game' },
@@ -194,13 +193,6 @@ export const dict = {
     he: 'עוזר להשלים מספר שחקנים, גיל מומלץ ומשך משחק אם הם מופיעים בתמונה, ומוסיף את שאר הטקסט לתיאור.',
     en: 'Helps fill in player count, recommended age and playtime if they appear in the photo, and adds the rest of the text to the description.',
   },
-  showBarcodeSection: { he: '+ אופציונלי: הוספת ברקוד לסריקה מהירה בעתיד', en: '+ Optional: add a barcode for quick scanning later' },
-  hideBarcodeSection: { he: 'הסתרת אפשרות הברקוד', en: 'Hide barcode option' },
-  barcodeOptionalHint: {
-    he: 'אם למשחק הזה יש ברקוד (בדרך כלל בגב או בתחתית הקופסה), אפשר לסרוק אותו כדי למצוא את המשחק מהר יותר בעתיד בשלב בחירת המשחקים. לגמרי אופציונלי - אפשר לדלג.',
-    en: 'If this game has a barcode (usually on the back or bottom of the box), scan it so you can find this game faster later when picking games. Fully optional - feel free to skip.',
-  },
-  scanBarcodeAddBtn: { he: '📷 סריקת ברקוד', en: '📷 Scan a barcode' },
   onShelfCheckbox: { he: 'המשחק נמצא איתי פיזית על המדף', en: 'The game is physically here, on the shelf' },
   gameplayAttributes: { he: 'מאפייני שיחוק (למנוע ההתאמה)', en: 'Gameplay attributes (for matching)' },
   minPlayersLabel: { he: "שחקנים (מינ')", en: 'Players (min)' },
@@ -221,17 +213,6 @@ export const dict = {
   deleteBtn: { he: 'מחיקה', en: 'Delete' },
   confirmDelete: { he: 'למחוק את "{{name}}" מהספרייה?', en: 'Delete "{{name}}" from the library?' },
 
-  // Scanner (inline)
-  scannerHint: { he: 'כוונו את המצלמה לברקוד שעל קופסת המשחק', en: 'Point the camera at the barcode on the box' },
-  startScan: { he: '▶️ התחלת סריקה', en: '▶️ Start scanning' },
-  openingCamera: { he: 'פותח מצלמה...', en: 'Opening camera...' },
-  tapToStart: { he: 'לחצו להתחלת סריקה', en: 'Tap to start scanning' },
-  cameraDenied: { he: 'הגישה למצלמה נחסמה. אפשרו הרשאת מצלמה בדפדפן ונסו שוב, או חפשו לפי שם למעלה.', en: 'Camera access was blocked. Allow camera permission and try again, or search by name above.' },
-  cameraUnsupported: { he: 'הדפדפן הזה לא תומך בגישה למצלמה. אפשר לחפש לפי שם למעלה.', en: "This browser doesn't support camera access. Search by name above instead." },
-  cameraError: { he: 'משהו השתבש בפתיחת המצלמה. נסו שוב.', en: 'Something went wrong opening the camera. Try again.' },
-  scanFoundAdded: { he: '✓ "{{name}}" נמצא ונוסף לבחירה', en: '✓ "{{name}}" found and added to your selection' },
-  scanNotFound: { he: 'לא נמצא משחק עם הברקוד הזה. אפשר להוסיף אותו כמשחק חדש.', en: "No game found with that barcode. You can add it as a new game." },
-  manualBarcodeEntry: { he: 'או הזינו ברקוד ידנית', en: 'Or enter a barcode manually' },
   search: { he: 'חיפוש', en: 'Search' },
 
   notFoundTitle: { he: 'הדף לא נמצא.', en: 'Page not found.' },

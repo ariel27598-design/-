@@ -8,16 +8,13 @@ function ytSearch(query: string): string {
 export type SeedGame = NewGame & { id: string };
 
 /**
- * Seed library. Barcodes are internal catalog identifiers used to demo the
- * scanner flow — scanning matches against this in-app library, not an
- * external product database. IDs are fixed (not random) so that shared
- * library links resolve to the same games on every device.
+ * Seed library. IDs are fixed (not random) so that shared library links
+ * resolve to the same games on every device.
  */
 export const SEED_GAMES: SeedGame[] = [
   {
     id: 'catan',
     name: { he: 'קטאן', en: 'Catan' },
-    barcodes: ['7290000000011'],
     imageUrl: placeholderCover('קטאן'),
     description: {
       he: 'משחק מסחר ובנייה: אוספים משאבים מאריחי משושה, סוחרים עם שאר השחקנים ובונים כפרים, ערים וכבישים כדי להגיע ראשונים ל-10 נקודות ניצחון.',
@@ -38,7 +35,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'carcassonne',
     name: { he: 'קרקסון', en: 'Carcassonne' },
-    barcodes: ['7290000000028'],
     imageUrl: placeholderCover('קרקסון'),
     description: {
       he: 'בונים נוף מאריחים מצוירים - דרכים, ערים ומנזרים - ומניחים פֵּיאונים כדי לתבוע בעלות על אזורים ולצבור נקודות.',
@@ -59,7 +55,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'dixit',
     name: { he: 'דיקסיט', en: 'Dixit' },
-    barcodes: ['7290000000035'],
     imageUrl: placeholderCover('דיקסיט'),
     description: {
       he: 'המספר בוחר קלף ונותן לו רמז מעורפל; שאר השחקנים בוחרים קלף שמתאים לרמז וצריך לנחש מי הקלף המקורי - איזון בין ברור מדי למופשט מדי.',
@@ -80,7 +75,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'codenames',
     name: { he: 'קודניימס', en: 'Codenames' },
-    barcodes: ['7290000000042'],
     imageUrl: placeholderCover('קודניימס'),
     description: {
       he: 'שני מרגלים-ראשיים נותנים רמז במילה אחת שיעזור לקבוצה שלהם לנחש כמה כרטיסים על השולחן שייכים להם - בלי לגעת בכרטיס המתנקש.',
@@ -101,7 +95,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'ticket-to-ride',
     name: { he: 'רכבות אמריקה', en: 'Ticket to Ride' },
-    barcodes: ['7290000000059'],
     imageUrl: placeholderCover('רכבות אמריקה'),
     description: {
       he: 'אוספים קלפי קרונות בצבעים ומניחים אותם על מפת ארה"ב כדי לכבוש מסלולי רכבת בין ערים, ומשלימים יעדים סודיים לנקודות בונוס.',
@@ -122,7 +115,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'splendor',
     name: { he: 'ספלנדור', en: 'Splendor' },
-    barcodes: ['7290000000066'],
     imageUrl: placeholderCover('ספלנדור'),
     description: {
       he: 'בונים אימפריה של סוחרי תכשיטים: קונים אבני חן כדי לרכוש קלפי פיתוח שמעניקים הנחות והכנסה, ומושכים אצילים לביקור.',
@@ -143,7 +135,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'azul',
     name: { he: 'אזול', en: 'Azul' },
-    barcodes: ['7290000000073'],
     imageUrl: placeholderCover('אזול'),
     description: {
       he: 'בוחרים אריחי קרמיקה צבעוניים ומסדרים אותם על לוח אישי כדי ליצור דפוסים ולצבור נקודות - קלף ללמידה, עמוק לשליטה.',
@@ -164,7 +155,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'pandemic',
     name: { he: 'מגפה', en: 'Pandemic' },
-    barcodes: ['7290000000080'],
     imageUrl: placeholderCover('מגפה'),
     description: {
       he: 'משחק שיתופי: כל השחקנים נלחמים יחד כדי לעצור ארבע מגפות עולמיות לפני שיצאו משליטה, כל אחד עם תפקיד וכוחות ייחודיים.',
@@ -185,7 +175,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: '7-wonders',
     name: { he: '7 פלאות', en: '7 Wonders' },
-    barcodes: ['7290000000097'],
     imageUrl: placeholderCover('7 פלאות'),
     description: {
       he: 'בונים ציוויליזציה עתיקה על ידי בחירת קלפים ומסירתם הלאה (drafting): מבנים, צבא, מסחר ומדע - שלושה עידנים של פיתוח.',
@@ -206,7 +195,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'uno',
     name: { he: 'אונו', en: 'Uno' },
-    barcodes: ['7290000000103'],
     imageUrl: placeholderCover('אונו'),
     description: {
       he: 'משחק קלפים קלאסי - משחררים את כל הקלפים ביד על ידי התאמת צבע או מספר, עם קלפי פעולה שהופכים סדר, מדלגים או מכריחים שליפה.',
@@ -227,7 +215,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'taboo',
     name: { he: 'טאבו', en: 'Taboo' },
-    barcodes: ['7290000000110'],
     imageUrl: placeholderCover('טאבו'),
     description: {
       he: 'מסבירים לחברי הקבוצה מילה על הכרטיס בלי להשתמש במילים האסורות הרשומות עליו, לפני שהזמן נגמר או שהיריבים תופסים אתכם.',
@@ -248,7 +235,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'dobble',
     name: { he: 'דובל', en: 'Dobble (Spot It!)' },
-    barcodes: ['7290000000127'],
     imageUrl: placeholderCover('דובל'),
     description: {
       he: 'בכל שני קלפים יש בדיוק סמל אחד משותף - מי שמזהה ראשון וצועק אותו זוכה בקלף. מהיר, פשוט ומתאים לכל הגילאים.',
@@ -269,7 +255,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'werewolf',
     name: { he: 'וורוולף', en: 'Werewolf' },
-    barcodes: ['7290000000134'],
     imageUrl: placeholderCover('וורוולף'),
     description: {
       he: 'משחק תפקידים חברתי - הכפר מנסה לחשוף את הזאבים הנסתרים בטרם יטרפו את כולם, תוך דיונים, שקרים והצבעות בכל לילה ויום.',
@@ -290,7 +275,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'monopoly',
     name: { he: 'מונופול', en: 'Monopoly' },
-    barcodes: ['7290000000141'],
     imageUrl: placeholderCover('מונופול'),
     description: {
       he: 'קונים רחובות, גובים שכירות ובונים בתים ומלונות מסביב ללוח כדי להפוך למונופול ולהוציא את שאר השחקנים מהמשחק.',
@@ -311,7 +295,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'bang',
     name: { he: 'בנג', en: 'Bang!' },
-    barcodes: ['7290000000158'],
     imageUrl: placeholderCover('בנג'),
     description: {
       he: 'משחק תפקידים בהשראת מערבונים - שריף, סגנים, פורעי חוק ובוגד, כל אחד עם מטרה נסתרת ונשק קלפים כדי לחסל את היריבים.',
@@ -332,7 +315,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'just-one',
     name: { he: "ג'אסט וואן", en: 'Just One' },
-    barcodes: ['7290000000165'],
     imageUrl: placeholderCover("ג'אסט וואן"),
     description: {
       he: 'משחק שיתופי - כולם כותבים רמז למילה סודית בלי לתאם עם השאר; רמזים כפולים נפסלים, והמנחש רואה רק את מה שנשאר.',
@@ -353,7 +335,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'avalon',
     name: { he: 'אבלון', en: 'Avalon' },
-    barcodes: ['7290000000172'],
     imageUrl: placeholderCover('אבלון'),
     description: {
       he: 'גרסה חברתית-נסתרת של המלך ארתור: הנאמנים לארתור מנסים להצליח במשימות בעוד משרתי מורגנה מחבלים בהן מבלי להיחשף.',
@@ -374,7 +355,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'wingspan',
     name: { he: 'כנפיים', en: 'Wingspan' },
-    barcodes: ['7290000000189'],
     imageUrl: placeholderCover('כנפיים'),
     description: {
       he: 'בונים רזרבת ציפורים משגשגת - כל ציפור מפעילה שרשראות של פעולות, אוספים מזון וביצים ומנקדים לפי יעדים וקלפי בונוס.',
@@ -395,7 +375,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'terraforming-mars',
     name: { he: 'טרהפורמינג מארס', en: 'Terraforming Mars' },
-    barcodes: ['7290000000196'],
     imageUrl: placeholderCover('טרהפורמינג מארס'),
     description: {
       he: 'תאגידים מתחרים על הפיכת מאדים לכוכב בר-מגורים - מעלים חמצן, טמפרטורה ואוקיינוסים תוך ניהול משאבים מורכב ועצי טכנולוגיה.',
@@ -416,7 +395,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'love-letter',
     name: { he: 'לב במרוץ', en: 'Love Letter' },
-    barcodes: ['7290000000202'],
     imageUrl: placeholderCover('לב במרוץ'),
     description: {
       he: 'משחק קלפים זעיר עם 16 קלפים בלבד - כל תור שולפים קלף ומשחקים אחד, מנסים לנחש או לחסל יריבים כדי להישאר האחרונים.',
@@ -437,7 +415,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'forbidden-island',
     name: { he: 'האי האסור', en: 'Forbidden Island' },
-    barcodes: ['7290000000219'],
     imageUrl: placeholderCover('האי האסור'),
     description: {
       he: 'משחק שיתופי משפחתי - צוות הרפתקנים אוסף ארבעה אוצרות מאי טובע לפני שהוא שוקע כולו מתחת למים.',
@@ -458,7 +435,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'alcatraz',
     name: { he: 'אלקטרז', en: 'Alcatraz: The Scapegoat' },
-    barcodes: [],
     imageUrl: placeholderCover('אלקטרז'),
     description: {
       he: 'משחק בריחה מהכלא: מגלגלים קוביות מתחת לכוסות בלי שהסוהר יתפוס אתכם, ומנסים לצבור נקודות בריחה כדי להיות הראשונים לצאת לחופש.',
@@ -479,7 +455,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'exploding-kittens',
     name: { he: 'חתלטים מתפוצצים', en: 'Exploding Kittens' },
-    barcodes: [],
     imageUrl: placeholderCover('חתלטים מתפוצצים'),
     description: {
       he: 'משחק קלפים מהיר: שולפים קלפים בתורות ומנסים לא להיתקל בקלף "חתול מתפוצץ" - עם קלפי הפרעה שמשנים את סדר המשחק ומצילים אתכם ברגע האחרון.',
@@ -500,7 +475,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'colored-tumble-tower',
     name: { he: 'מפולת לבנים צבעונית', en: 'Colored Tumble Tower' },
-    barcodes: [],
     imageUrl: placeholderCover('מפולת לבנים צבעונית'),
     description: {
       he: 'מגדל לבנים בסגנון ג\'נגה עם קוביית צבעים: מגלגלים ומוציאים לבנה בצבע שנקבע בלי להפיל את המגדל - מי שמפיל מפסיד.',
@@ -521,7 +495,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'alias-israel',
     name: { he: 'אלאס ישראל', en: 'Alias Israel' },
-    barcodes: [],
     imageUrl: placeholderCover('אלאס ישראל'),
     description: {
       he: 'משחק ניחוש מילים בקבוצות: מסבירים לחברי הקבוצה שלכם מילה על הכרטיס בלי להשתמש במילה עצמה, לפני שהזמן נגמר.',
@@ -542,7 +515,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'african-mancala',
     name: { he: 'מנקלה אפריקאית', en: 'African Mancala' },
-    barcodes: [],
     imageUrl: placeholderCover('מנקלה אפריקאית'),
     description: {
       he: 'משחק אסטרטגיה מסורתי לשני שחקנים: מזיזים אבנים בין הגומות בלוח כדי לאסוף הכי הרבה לתוך המחסן שלכם.',
@@ -563,7 +535,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'davinci-code',
     name: { he: 'דה וינצי קוד', en: 'DaVinci Code' },
-    barcodes: [],
     imageUrl: placeholderCover('דה וינצי קוד'),
     description: {
       he: 'משחק היגיון: מנסים לנחש את הקודים המספריים המוסתרים של היריבים לפי רמזים לוגיים, לפני שהם מנחשים את שלכם.',
@@ -584,7 +555,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'super-taki',
     name: { he: 'סופר טאקי', en: 'Super Taki' },
-    barcodes: [],
     imageUrl: placeholderCover('סופר טאקי'),
     description: {
       he: 'משחק קלפים ישראלי בסגנון אונו: נפטרים מהקלפים ביד לפי צבע או מספר תואם, עם קלפים מיוחדים שמשנים כיוון ומעניקים תורות נוספים.',
@@ -605,7 +575,6 @@ export const SEED_GAMES: SeedGame[] = [
   {
     id: 'texas-holdem-poker',
     name: { he: 'פוקר טקסס הולדם', en: "Texas Hold'em Poker" },
-    barcodes: [],
     imageUrl: placeholderCover('פוקר טקסס הולדם'),
     description: {
       he: 'סט פוקר עם ז\'יטונים וקלפים: כל שחקן מקבל שני קלפים אישיים, ויחד עם חמישה קלפים משותפים על השולחן מרכיבים את היד הכי טובה.',

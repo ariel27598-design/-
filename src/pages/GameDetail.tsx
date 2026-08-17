@@ -102,12 +102,6 @@ export default function GameDetail() {
           )}
         </div>
       )}
-
-      {game.barcodes.length > 0 && (
-        <div className="text-xs text-slate-500">
-          {t('barcodesLabel')}: <span dir="ltr">{game.barcodes.join(', ')}</span>
-        </div>
-      )}
     </div>
   );
 }

@@ -11,7 +11,6 @@ interface GameStore {
   deleteGame: (id: string) => void;
   toggleOwned: (id: string) => void;
   setOwnedMany: (ids: Set<string>) => void;
-  findByBarcode: (barcode: string) => Game | undefined;
   resetToSeed: () => void;
 }
 
@@ -24,7 +23,7 @@ function seedWithIds(): Game[] {
 
 export const useGameStore = create<GameStore>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       games: seedWithIds(),
 
       addGame: (game) => {
@@ -53,11 +52,6 @@ export const useGameStore = create<GameStore>()(
         set((state) => ({
           games: state.games.map((g) => ({ ...g, owned: ids.has(g.id) })),
         }));
-      },
-
-      findByBarcode: (barcode) => {
-        const normalized = barcode.trim();
-        return get().games.find((g) => g.barcodes.includes(normalized));
       },
 
       resetToSeed: () => set({ games: seedWithIds() }),

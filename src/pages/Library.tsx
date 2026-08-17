@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useGameStore } from '../store/useGameStore';
+import { useLibraryStore } from '../store/useLibraryStore';
 import { ALL_CATEGORIES, type Category } from '../types';
 import { useT } from '../i18n/useT';
 import GameCard from '../components/GameCard';
@@ -10,7 +11,9 @@ type OwnedFilter = 'all' | 'owned' | 'missing';
 
 export default function Library() {
   const { t, tCategory, tText } = useT();
+  const navigate = useNavigate();
   const games = useGameStore((s) => s.games);
+  const libraries = useLibraryStore((s) => s.libraries);
   const [query, setQuery] = useState('');
   const [ownedFilter, setOwnedFilter] = useState<OwnedFilter>('all');
   const [activeCategories, setActiveCategories] = useState<Category[]>([]);
@@ -49,6 +52,23 @@ export default function Library() {
           {t('addGameCta')}
         </Link>
       </div>
+
+      {libraries.length > 0 && (
+        <div className="flex flex-col gap-2 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+          <span className="text-sm font-semibold text-slate-200">{t('myLibrariesTitle')}</span>
+          <div className="flex flex-wrap gap-2">
+            {libraries.map((lib) => (
+              <button
+                key={lib.id}
+                onClick={() => navigate('/find', { state: { libraryId: lib.id } })}
+                className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:bg-white/10"
+              >
+                🎯 {lib.name} · {t('libraryGamesCount', { count: lib.gameIds.length })}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       <input
         value={query}

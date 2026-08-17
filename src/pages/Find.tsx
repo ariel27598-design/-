@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useGameStore } from '../store/useGameStore';
 import { useLibraryStore, type GameLibrary } from '../store/useLibraryStore';
 import { useT } from '../i18n/useT';
 import type { GameMatchResult, QuestionnaireAnswers } from '../types';
 import { rankGames, rankGamesForGroup, type GroupConstraints } from '../lib/matching';
-import { buildLibraryShareUrl, clearLibraryHash, readSharedLibraryFromHash } from '../lib/libraryShare';
+import { buildLibraryShareUrl, decodeLibraryPayload } from '../lib/libraryShare';
 import QuestionnaireForm from '../components/QuestionnaireForm';
 import GameCard from '../components/GameCard';
 import BarcodeScanner from '../components/BarcodeScanner';
@@ -40,10 +40,13 @@ export default function Find() {
   const [answersList, setAnswersList] = useState<QuestionnaireAnswers[]>([]);
   const [results, setResults] = useState<GameMatchResult[]>([]);
   const [resultCount, setResultCount] = useState<number | 'all'>(5);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  // Import a shared library from the URL hash, if this link was opened from one.
+  // Import a shared library from the "lib" query param, if this link was opened from one.
   useEffect(() => {
-    const shared = readSharedLibraryFromHash();
+    const encoded = searchParams.get('lib');
+    if (!encoded) return;
+    const shared = decodeLibraryPayload(encoded);
     if (!shared) return;
     const existingIds = new Set(games.map((g) => g.id));
     const validIds = shared.gameIds.filter((id) => existingIds.has(id));
@@ -51,7 +54,11 @@ export default function Find() {
     setSelectedIds(new Set(validIds));
     setActiveLibraryId(lib.id);
     setSharedBanner({ name: shared.name, count: validIds.length });
-    clearLibraryHash();
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.delete('lib');
+      return next;
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

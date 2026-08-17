@@ -1,6 +1,7 @@
-// Encodes a named library (name + game ids) into the URL hash so it can be
-// shared as a plain link/QR code with no backend involved. The hash never
-// reaches a server, so this works regardless of how the page is hosted.
+// Encodes a named library (name + game ids) into a URL query param so it can
+// be shared as a plain link/QR code with no backend involved. With
+// HashRouter, "/find?lib=..." lives entirely after the "#", so it's always
+// served by the same static index.html regardless of host.
 
 interface SharedLibraryPayload {
   n: string;
@@ -18,20 +19,14 @@ function fromBase64Url(value: string): string {
   return decodeURIComponent(escape(atob(padded)));
 }
 
-export function buildLibraryShareUrl(name: string, gameIds: string[]): string {
+export function encodeLibraryPayload(name: string, gameIds: string[]): string {
   const payload: SharedLibraryPayload = { n: name, g: gameIds };
-  const encoded = toBase64Url(JSON.stringify(payload));
-  const url = new URL(window.location.href);
-  url.hash = `lib=${encoded}`;
-  return url.toString();
+  return toBase64Url(JSON.stringify(payload));
 }
 
-export function readSharedLibraryFromHash(): { name: string; gameIds: string[] } | null {
-  const hash = window.location.hash.replace(/^#/, '');
-  const match = hash.match(/(?:^|&)lib=([^&]+)/);
-  if (!match) return null;
+export function decodeLibraryPayload(encoded: string): { name: string; gameIds: string[] } | null {
   try {
-    const payload = JSON.parse(fromBase64Url(match[1])) as SharedLibraryPayload;
+    const payload = JSON.parse(fromBase64Url(encoded)) as SharedLibraryPayload;
     if (!payload.n || !Array.isArray(payload.g)) return null;
     return { name: payload.n, gameIds: payload.g };
   } catch {
@@ -39,6 +34,8 @@ export function readSharedLibraryFromHash(): { name: string; gameIds: string[] }
   }
 }
 
-export function clearLibraryHash(): void {
-  history.replaceState(null, '', window.location.pathname + window.location.search);
+export function buildLibraryShareUrl(name: string, gameIds: string[]): string {
+  const encoded = encodeLibraryPayload(name, gameIds);
+  const base = window.location.href.split('#')[0];
+  return `${base}#/find?lib=${encoded}`;
 }

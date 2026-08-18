@@ -74,7 +74,7 @@ export const SEED_GAMES: SeedGame[] = [
   },
   {
     id: 'codenames',
-    name: { he: 'קודניימס', en: 'Codenames' },
+    name: { he: 'שם קוד', en: 'Codenames' },
     imageUrl: coverUrl('codenames', 'jpg'),
     description: {
       he: 'שני מרגלים-ראשיים נותנים רמז במילה אחת שיעזור לקבוצה שלהם לנחש כמה כרטיסים על השולחן שייכים להם - בלי לגעת בכרטיס המתנקש.',

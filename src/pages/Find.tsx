@@ -162,7 +162,7 @@ export default function Find() {
     if (viewIndex > 0) {
       setViewIndex((v) => v - 1);
     } else {
-      setStep('shelf');
+      setStep(activeLibraryId !== null ? 'setup' : 'shelf');
     }
   }
 
@@ -289,10 +289,11 @@ export default function Find() {
         </span>
 
         <button
-          onClick={() => setStep('shelf')}
-          className="rounded-full bg-indigo-500 py-3 text-sm font-bold text-white hover:bg-indigo-400"
+          onClick={() => (activeLibraryId !== null ? proceedToQuestions() : setStep('shelf'))}
+          disabled={activeLibraryId !== null && selectedIds.size === 0}
+          className="rounded-full bg-indigo-500 py-3 text-sm font-bold text-white transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-40"
         >
-          {t('continueToShelf')}
+          {activeLibraryId !== null ? t('continueToQuestions') : t('continueToShelf')}
         </button>
       </div>
     );

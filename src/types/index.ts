@@ -44,8 +44,6 @@ export interface QuestionnaireAnswers {
   luckVsStrategy: number;
   socialMode: 'cooperative' | 'competitive' | 'either';
   preferredCategories: Category[];
-  /** 1 (dislike) - 5 (love) tolerance for long/complex rules explanations. */
-  willingToLearnRules: number;
 }
 
 export interface MatchReason {

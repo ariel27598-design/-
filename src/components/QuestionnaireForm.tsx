@@ -30,7 +30,6 @@ export default function QuestionnaireForm({
   const [luckVsStrategy, setLuckVsStrategy] = useState(defaultAnswers?.luckVsStrategy ?? 3);
   const [socialMode, setSocialMode] = useState<QuestionnaireAnswers['socialMode']>(defaultAnswers?.socialMode ?? 'either');
   const [preferredCategories, setPreferredCategories] = useState<Category[]>(defaultAnswers?.preferredCategories ?? []);
-  const [willingToLearnRules, setWillingToLearnRules] = useState(defaultAnswers?.willingToLearnRules ?? 3);
 
   const TIME_OPTIONS = [
     { value: 20, label: t('time20') },
@@ -53,7 +52,6 @@ export default function QuestionnaireForm({
       luckVsStrategy,
       socialMode,
       preferredCategories,
-      willingToLearnRules,
     });
   }
 
@@ -95,10 +93,6 @@ export default function QuestionnaireForm({
 
       <Question label={t('luckQuestion')}>
         <SliderRow value={luckVsStrategy} onChange={setLuckVsStrategy} minLabel={t('luckLight')} maxLabel={t('luckStrategy')} />
-      </Question>
-
-      <Question label={t('rulesQuestion')}>
-        <SliderRow value={willingToLearnRules} onChange={setWillingToLearnRules} minLabel={t('rulesSimple')} maxLabel={t('rulesFine')} />
       </Question>
 
       <Question label={t('socialQuestion')}>

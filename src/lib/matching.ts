@@ -68,10 +68,9 @@ export function scoreGame(game: Game, answers: QuestionnaireAnswers, constraints
     }
   }
 
-  // Rules-learning tolerance vs weight: heavy game + low tolerance = penalty folded into complexity already,
-  // add a small extra nudge so it's felt distinctly.
+  // Heavy game requested by someone who actually wants light/simple games: extra nudge down.
   let learnPenalty = 0;
-  if (game.weight >= 4 && answers.willingToLearnRules <= 2) {
+  if (game.weight >= 4 && answers.complexity <= 2) {
     learnPenalty = 10;
     reasons.push({ key: 'reasonComplexRules' });
   }

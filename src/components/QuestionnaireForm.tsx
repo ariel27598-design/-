@@ -8,18 +8,29 @@ interface Props {
   defaultName: string;
   requireName: boolean;
   submitLabel: string;
+  defaultAnswers?: QuestionnaireAnswers;
+  onBack?: () => void;
+  backLabel?: string;
   onSubmit: (answers: QuestionnaireAnswers) => void;
 }
 
-export default function QuestionnaireForm({ defaultName, requireName, submitLabel, onSubmit }: Props) {
+export default function QuestionnaireForm({
+  defaultName,
+  requireName,
+  submitLabel,
+  defaultAnswers,
+  onBack,
+  backLabel,
+  onSubmit,
+}: Props) {
   const { t, tCategory } = useT();
-  const [personName, setPersonName] = useState(defaultName);
-  const [timeAvailable, setTimeAvailable] = useState(60);
-  const [complexity, setComplexity] = useState(3);
-  const [luckVsStrategy, setLuckVsStrategy] = useState(3);
-  const [socialMode, setSocialMode] = useState<QuestionnaireAnswers['socialMode']>('either');
-  const [preferredCategories, setPreferredCategories] = useState<Category[]>([]);
-  const [willingToLearnRules, setWillingToLearnRules] = useState(3);
+  const [personName, setPersonName] = useState(defaultAnswers?.personName ?? defaultName);
+  const [timeAvailable, setTimeAvailable] = useState(defaultAnswers?.timeAvailable ?? 60);
+  const [complexity, setComplexity] = useState(defaultAnswers?.complexity ?? 3);
+  const [luckVsStrategy, setLuckVsStrategy] = useState(defaultAnswers?.luckVsStrategy ?? 3);
+  const [socialMode, setSocialMode] = useState<QuestionnaireAnswers['socialMode']>(defaultAnswers?.socialMode ?? 'either');
+  const [preferredCategories, setPreferredCategories] = useState<Category[]>(defaultAnswers?.preferredCategories ?? []);
+  const [willingToLearnRules, setWillingToLearnRules] = useState(defaultAnswers?.willingToLearnRules ?? 3);
 
   const TIME_OPTIONS = [
     { value: 20, label: t('time20') },
@@ -128,9 +139,16 @@ export default function QuestionnaireForm({ defaultName, requireName, submitLabe
         </div>
       </Question>
 
-      <button type="submit" className="rounded-full bg-indigo-500 py-3 text-sm font-bold text-white hover:bg-indigo-400">
-        {submitLabel}
-      </button>
+      <div className="flex gap-3">
+        {onBack && (
+          <button type="button" onClick={onBack} className="btn-secondary shrink-0">
+            {backLabel}
+          </button>
+        )}
+        <button type="submit" className="flex-1 rounded-full bg-indigo-500 py-3 text-sm font-bold text-white hover:bg-indigo-400">
+          {submitLabel}
+        </button>
+      </div>
     </form>
   );
 }

@@ -40,6 +40,7 @@ export default function Find() {
   const [loadLibraryName, setLoadLibraryName] = useState('');
   const [loadStatus, setLoadStatus] = useState<'idle' | 'loading' | 'not-found'>('idle');
   const [answersList, setAnswersList] = useState<QuestionnaireAnswers[]>([]);
+  const [viewIndex, setViewIndex] = useState(0);
   const [results, setResults] = useState<GameMatchResult[]>([]);
   const [resultCount, setResultCount] = useState<number | 'all'>(5);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -147,12 +148,21 @@ export default function Find() {
   }
 
   function handleQuestionSubmit(answers: QuestionnaireAnswers) {
-    const next = [...answersList, answers];
+    const next = [...answersList.slice(0, viewIndex), answers];
     if (mode === 'solo' || next.length >= playerCount) {
       setAnswersList(next);
       recomputeResults(next);
     } else {
       setAnswersList(next);
+      setViewIndex(next.length);
+    }
+  }
+
+  function handleQuestionsBack() {
+    if (viewIndex > 0) {
+      setViewIndex((v) => v - 1);
+    } else {
+      setStep('shelf');
     }
   }
 
@@ -164,6 +174,7 @@ export default function Find() {
   function restart() {
     setStep('setup');
     setAnswersList([]);
+    setViewIndex(0);
     setResults([]);
   }
 
@@ -291,6 +302,9 @@ export default function Find() {
     return (
       <div className="mx-auto flex max-w-lg flex-col gap-5">
         <div>
+          <button onClick={() => setStep('setup')} className="mb-1 text-xs font-semibold text-indigo-300 hover:text-indigo-200">
+            {t('backBtn')}
+          </button>
           <h1 className="text-2xl font-bold text-white">{t('shelfTitle')}</h1>
           <p className="text-sm text-slate-400">{t('shelfSubtitle')}</p>
         </div>
@@ -399,7 +413,7 @@ export default function Find() {
   }
 
   if (step === 'questions') {
-    const currentIndex = answersList.length;
+    const currentIndex = viewIndex;
     return (
       <div className="mx-auto flex max-w-lg flex-col gap-5">
         {mode === 'group' && (
@@ -414,6 +428,9 @@ export default function Find() {
           key={currentIndex}
           defaultName={mode === 'group' ? t('playerDefaultName', { n: currentIndex + 1 }) : t('meDefaultName')}
           requireName={mode === 'group'}
+          defaultAnswers={answersList[currentIndex]}
+          onBack={handleQuestionsBack}
+          backLabel={currentIndex > 0 ? t('previousPlayer') : t('backBtn')}
           submitLabel={mode === 'group' && currentIndex + 1 < playerCount ? t('nextPlayer') : t('findMyGame')}
           onSubmit={handleQuestionSubmit}
         />

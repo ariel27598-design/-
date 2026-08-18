@@ -205,6 +205,13 @@ export default function GameForm({ mode }: Props) {
   return (
     <form onSubmit={handleSubmit} className="mx-auto flex max-w-2xl flex-col gap-6 pb-10">
       <div>
+        <button
+          type="button"
+          onClick={() => navigate(mode === 'edit' && existing ? `/games/${existing.id}` : '/library')}
+          className="mb-1 text-xs font-semibold text-indigo-300 hover:text-indigo-200"
+        >
+          {t('backBtn')}
+        </button>
         <h1 className="text-2xl font-bold text-white">{mode === 'edit' ? t('editGameTitle') : t('addGameTitle')}</h1>
         <p className="text-sm text-slate-400">{t('addGameSubtitle')}</p>
       </div>

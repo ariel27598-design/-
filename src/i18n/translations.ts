@@ -12,19 +12,11 @@ export const dict = {
   navLibrary: { he: 'ספרייה', en: 'Library' },
 
   // Home
-  heroEyebrow: { he: 'ערב משחקים מתחיל כאן', en: "Game night starts here" },
   heroTitle: { he: 'בוחרים אילו משחקים יש, עונים על שאלון קצר, ומקבלים המלצה', en: 'Pick what games you have, answer a short quiz, get a match' },
-  heroSubtitle: {
-    he: 'יש {{count}} משחקים בספרייה. לחצו "מצאו משחק" כדי לבחור מה יש לכם ולקבל המלצה מותאמת - לבד או בקבוצה.',
-    en: 'There are {{count}} games in the library. Tap "Find a game" to pick what you have and get a tailored match - solo or as a group.',
-  },
   findGameCta: { he: '🔍 מצאו לי משחק', en: '🔍 Find me a game' },
   addGameCta: { he: '➕ הוספת משחק', en: '➕ Add a game' },
-  libraryCta: { he: '📚 לספרייה המלאה', en: '📚 Browse the library' },
   statTotalGames: { he: 'סה״כ משחקים', en: 'Total games' },
   statOnShelf: { he: 'על המדף שלי', en: 'On my shelf' },
-  statCooperative: { he: 'שיתופיים', en: 'Cooperative' },
-  statCategories: { he: 'קטגוריות', en: 'Categories' },
   recentlyAdded: { he: 'נוספו לאחרונה', en: 'Recently added' },
   viewAllLibrary: { he: 'לכל הספרייה ←', en: 'View full library →' },
 
@@ -120,6 +112,8 @@ export const dict = {
   socialEither: { he: '🤷 לא משנה', en: "🤷 Either is fine" },
   categoriesQuestion: { he: 'אילו סגנונות מושכים אתכם? (אופציונלי)', en: 'Which styles appeal to you? (optional)' },
   nextPlayer: { he: 'הבא/ה בתור →', en: 'Next player →' },
+  previousPlayer: { he: '← הקודם/ת', en: '← Previous' },
+  backBtn: { he: '← חזרה', en: '← Back' },
   findMyGame: { he: 'מצאו לי משחק! 🎲', en: 'Find my game! 🎲' },
   playerOf: { he: 'שחקן/ית {{current}} מתוך {{total}}', en: 'Player {{current}} of {{total}}' },
   playerDefaultName: { he: 'שחקן/ית {{n}}', en: 'Player {{n}}' },

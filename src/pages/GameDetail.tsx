@@ -29,6 +29,12 @@ export default function GameDetail() {
 
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-6 pb-10">
+      <button
+        onClick={() => navigate('/library')}
+        className="self-start text-xs font-semibold text-indigo-300 hover:text-indigo-200"
+      >
+        {t('backBtn')}
+      </button>
       <div className="flex flex-col gap-4 sm:flex-row">
         <img
           src={game.imageUrl}

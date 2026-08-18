@@ -79,8 +79,8 @@ export default function QuestionnaireForm({
               onClick={() => setTimeAvailable(opt.value)}
               className={`rounded-xl border px-2 py-2.5 text-xs font-semibold transition ${
                 timeAvailable === opt.value
-                  ? 'border-indigo-400/60 bg-indigo-500/20 text-indigo-200'
-                  : 'border-white/10 bg-white/5 text-slate-300 hover:bg-white/10'
+                  ? 'border-primary-400/60 bg-primary-500/20 text-primary-200'
+                  : 'border-white/10 bg-white/5 text-ink-300 hover:bg-white/10'
               }`}
             >
               {opt.label}
@@ -116,8 +116,8 @@ export default function QuestionnaireForm({
               onClick={() => setSocialMode(value)}
               className={`rounded-full px-3.5 py-2 text-sm font-semibold transition ${
                 socialMode === value
-                  ? 'bg-indigo-500 text-white'
-                  : 'border border-white/10 bg-white/5 text-slate-300 hover:bg-white/10'
+                  ? 'bg-primary-500 text-white'
+                  : 'border border-white/10 bg-white/5 text-ink-300 hover:bg-white/10'
               }`}
             >
               {label}
@@ -145,7 +145,7 @@ export default function QuestionnaireForm({
             {backLabel}
           </button>
         )}
-        <button type="submit" className="flex-1 rounded-full bg-indigo-500 py-3 text-sm font-bold text-white hover:bg-indigo-400">
+        <button type="submit" className="flex-1 rounded-full bg-primary-500 py-3 text-sm font-bold text-white hover:bg-primary-400">
           {submitLabel}
         </button>
       </div>
@@ -156,7 +156,7 @@ export default function QuestionnaireForm({
 function Question({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-2">
-      <span className="text-sm font-semibold text-slate-200">{label}</span>
+      <span className="text-sm font-semibold text-ink-200">{label}</span>
       {children}
     </div>
   );
@@ -181,9 +181,9 @@ function SliderRow({
         max={5}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full accent-indigo-500"
+        className="w-full accent-primary-500"
       />
-      <div className="flex justify-between text-xs text-slate-500">
+      <div className="flex justify-between text-xs text-ink-500">
         <span>{minLabel}</span>
         <span>{maxLabel}</span>
       </div>

@@ -14,9 +14,9 @@ export default function CategoryPill({ label, active, onClick, className = '' }:
       onClick={onClick}
       className={`rounded-full border px-2.5 py-1 text-xs font-medium transition ${
         active
-          ? 'border-indigo-400/60 bg-indigo-500/20 text-indigo-200'
-          : 'border-white/10 bg-white/5 text-slate-300'
-      } ${interactive ? 'cursor-pointer hover:border-indigo-400/40 hover:text-indigo-200' : ''} ${className}`}
+          ? 'border-primary-400/60 bg-primary-500/20 text-primary-200'
+          : 'border-white/10 bg-white/5 text-ink-300'
+      } ${interactive ? 'cursor-pointer hover:border-primary-400/40 hover:text-primary-200' : ''} ${className}`}
     >
       {label}
     </Comp>

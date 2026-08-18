@@ -183,24 +183,24 @@ export default function Find() {
       <div className="mx-auto flex max-w-lg flex-col gap-6">
         <div>
           <h1 className="text-2xl font-bold text-white">{t('findTitle')}</h1>
-          <p className="text-sm text-slate-400">{t('findSubtitle')}</p>
+          <p className="text-sm text-ink-400">{t('findSubtitle')}</p>
         </div>
 
         {sharedBanner && (
-          <p className="rounded-xl border border-indigo-400/30 bg-indigo-500/10 px-3 py-2 text-sm font-semibold text-indigo-200">
+          <p className="rounded-xl border border-primary-400/30 bg-primary-500/10 px-3 py-2 text-sm font-semibold text-primary-200">
             {t('librarySharedBanner', { name: sharedBanner.name, count: sharedBanner.count })}
           </p>
         )}
 
         <div className="flex flex-col gap-2">
-          <span className="text-sm font-semibold text-slate-200">{t('whichGamesTitle')}</span>
+          <span className="text-sm font-semibold text-ink-200">{t('whichGamesTitle')}</span>
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setActiveLibraryId(null)}
               className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
                 activeLibraryId === null
-                  ? 'bg-indigo-500 text-white'
-                  : 'border border-white/10 bg-white/5 text-slate-300 hover:bg-white/10'
+                  ? 'bg-primary-500 text-white'
+                  : 'border border-white/10 bg-white/5 text-ink-300 hover:bg-white/10'
               }`}
             >
               {t('adHocOption')}
@@ -210,8 +210,8 @@ export default function Find() {
                 key={lib.id}
                 className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition ${
                   activeLibraryId === lib.id
-                    ? 'bg-indigo-500 text-white'
-                    : 'border border-white/10 bg-white/5 text-slate-300 hover:bg-white/10'
+                    ? 'bg-primary-500 text-white'
+                    : 'border border-white/10 bg-white/5 text-ink-300 hover:bg-white/10'
                 }`}
               >
                 <button onClick={() => applyLibrary(lib)}>
@@ -249,49 +249,49 @@ export default function Find() {
         </div>
 
         <div className="flex flex-col gap-2">
-          <span className="text-sm font-semibold text-slate-200">{t('whoFillsTitle')}</span>
+          <span className="text-sm font-semibold text-ink-200">{t('whoFillsTitle')}</span>
           <div className="grid grid-cols-2 gap-3">
             <button
               onClick={() => setMode('solo')}
               className={`rounded-2xl border p-4 text-right transition ${
-                mode === 'solo' ? 'border-indigo-400/60 bg-indigo-500/15' : 'border-white/10 bg-white/5 hover:bg-white/10'
+                mode === 'solo' ? 'border-primary-400/60 bg-primary-500/15' : 'border-white/10 bg-white/5 hover:bg-white/10'
               }`}
             >
               <div className="text-2xl">🙋</div>
               <div className="mt-1 font-bold text-white">{t('soloTitle')}</div>
-              <div className="text-xs text-slate-400">{t('soloDesc')}</div>
+              <div className="text-xs text-ink-400">{t('soloDesc')}</div>
             </button>
             <button
               onClick={() => setMode('group')}
               className={`rounded-2xl border p-4 text-right transition ${
-                mode === 'group' ? 'border-indigo-400/60 bg-indigo-500/15' : 'border-white/10 bg-white/5 hover:bg-white/10'
+                mode === 'group' ? 'border-primary-400/60 bg-primary-500/15' : 'border-white/10 bg-white/5 hover:bg-white/10'
               }`}
             >
               <div className="text-2xl">👥</div>
               <div className="mt-1 font-bold text-white">{t('groupTitle')}</div>
-              <div className="text-xs text-slate-400">{t('groupDesc')}</div>
+              <div className="text-xs text-ink-400">{t('groupDesc')}</div>
             </button>
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-3">
           <label className="flex flex-col gap-1.5">
-            <span className="text-sm font-semibold text-slate-200">{t('playerCountLabel')}</span>
+            <span className="text-sm font-semibold text-ink-200">{t('playerCountLabel')}</span>
             <NumberField min={1} max={20} value={playerCount} onChange={(n) => setPlayerCount(Math.max(1, n))} />
           </label>
           <label className="flex flex-col gap-1.5">
-            <span className="text-sm font-semibold text-slate-200">{t('ageQuestionLabel')}</span>
+            <span className="text-sm font-semibold text-ink-200">{t('ageQuestionLabel')}</span>
             <NumberField min={0} max={99} value={groupMinAge} onChange={(n) => setGroupMinAge(Math.max(0, n))} />
           </label>
         </div>
-        <span className="-mt-3 text-xs text-slate-500">
+        <span className="-mt-3 text-xs text-ink-500">
           {mode === 'group' ? t('playerCountHintGroup') : t('playerCountHintSolo')} {t('ageHint')}
         </span>
 
         <button
           onClick={() => (activeLibraryId !== null ? proceedToQuestions() : setStep('shelf'))}
           disabled={activeLibraryId !== null && selectedIds.size === 0}
-          className="rounded-full bg-indigo-500 py-3 text-sm font-bold text-white transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-40"
+          className="rounded-full bg-primary-500 py-3 text-sm font-bold text-white transition hover:bg-primary-400 disabled:cursor-not-allowed disabled:opacity-40"
         >
           {activeLibraryId !== null ? t('continueToQuestions') : t('continueToShelf')}
         </button>
@@ -303,11 +303,11 @@ export default function Find() {
     return (
       <div className="mx-auto flex max-w-lg flex-col gap-5">
         <div>
-          <button onClick={() => setStep('setup')} className="mb-1 text-xs font-semibold text-indigo-300 hover:text-indigo-200">
+          <button onClick={() => setStep('setup')} className="mb-1 text-xs font-semibold text-primary-300 hover:text-primary-200">
             {t('backBtn')}
           </button>
           <h1 className="text-2xl font-bold text-white">{t('shelfTitle')}</h1>
-          <p className="text-sm text-slate-400">{t('shelfSubtitle')}</p>
+          <p className="text-sm text-ink-400">{t('shelfSubtitle')}</p>
         </div>
 
         <div className="flex gap-2">
@@ -319,15 +319,15 @@ export default function Find() {
           />
         </div>
 
-        <div className="flex items-center justify-between text-xs text-slate-400">
-          <span className="font-semibold text-slate-200">{t('selectedCount', { count: selectedIds.size })}</span>
+        <div className="flex items-center justify-between text-xs text-ink-400">
+          <span className="font-semibold text-ink-200">{t('selectedCount', { count: selectedIds.size })}</span>
           <div className="flex gap-3">
             <button
               onClick={() => {
                 setActiveLibraryId(null);
                 setSelectedIds(new Set(games.map((g) => g.id)));
               }}
-              className="hover:text-indigo-300"
+              className="hover:text-primary-300"
             >
               {t('selectAll')}
             </button>
@@ -336,7 +336,7 @@ export default function Find() {
                 setActiveLibraryId(null);
                 setSelectedIds(new Set());
               }}
-              className="hover:text-indigo-300"
+              className="hover:text-primary-300"
             >
               {t('clearAll')}
             </button>
@@ -355,9 +355,9 @@ export default function Find() {
           ))}
         </div>
 
-        <p className="text-center text-xs text-slate-500">
+        <p className="text-center text-xs text-ink-500">
           {t('addMissingGameHint')}{' '}
-          <Link to="/games/new" className="font-semibold text-indigo-300 hover:text-indigo-200">
+          <Link to="/games/new" className="font-semibold text-primary-300 hover:text-primary-200">
             {t('addMissingGameLink')}
           </Link>
         </p>
@@ -384,7 +384,7 @@ export default function Find() {
           <button
             onClick={() => setSavingLibraryName('')}
             disabled={selectedIds.size === 0}
-            className="rounded-full border border-white/15 py-2.5 text-sm font-semibold text-slate-200 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-full border border-white/15 py-2.5 text-sm font-semibold text-ink-200 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
           >
             {t('saveAsLibraryBtn')}
           </button>
@@ -393,7 +393,7 @@ export default function Find() {
         <button
           onClick={proceedToQuestions}
           disabled={selectedIds.size === 0}
-          className="rounded-full bg-indigo-500 py-3 text-sm font-bold text-white transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-40"
+          className="rounded-full bg-primary-500 py-3 text-sm font-bold text-white transition hover:bg-primary-400 disabled:cursor-not-allowed disabled:opacity-40"
         >
           {t('continueToQuestions')}
         </button>
@@ -418,10 +418,10 @@ export default function Find() {
     return (
       <div className="mx-auto flex max-w-lg flex-col gap-5">
         {mode === 'group' && (
-          <div className="flex items-center justify-between text-sm text-slate-400">
+          <div className="flex items-center justify-between text-sm text-ink-400">
             <span>{t('playerOf', { current: currentIndex + 1, total: playerCount })}</span>
             <div className="h-1.5 w-32 overflow-hidden rounded-full bg-white/10">
-              <div className="h-full bg-indigo-500 transition-all" style={{ width: `${(currentIndex / playerCount) * 100}%` }} />
+              <div className="h-full bg-primary-500 transition-all" style={{ width: `${(currentIndex / playerCount) * 100}%` }} />
             </div>
           </div>
         )}
@@ -455,21 +455,21 @@ export default function Find() {
       </div>
 
       {pool.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-white/15 p-10 text-center text-slate-400">
+        <div className="rounded-2xl border border-dashed border-white/15 p-10 text-center text-ink-400">
           {t('emptyShelfResults')}
         </div>
       ) : (
         <>
           {eligible.length === 0 && <p className="text-sm text-amber-300">{t('noneEligible', { count: playerCount })}</p>}
 
-          <div className="flex items-center gap-2 text-xs text-slate-400">
+          <div className="flex items-center gap-2 text-xs text-ink-400">
             <span>{t('showCount')}</span>
             {RESULT_COUNT_OPTIONS.map((n) => (
               <button
                 key={n}
                 onClick={() => setResultCount(n)}
                 className={`rounded-full px-2.5 py-1 font-semibold transition ${
-                  resultCount === n ? 'bg-indigo-500 text-white' : 'border border-white/10 bg-white/5 hover:bg-white/10'
+                  resultCount === n ? 'bg-primary-500 text-white' : 'border border-white/10 bg-white/5 hover:bg-white/10'
                 }`}
               >
                 {n}
@@ -478,7 +478,7 @@ export default function Find() {
             <button
               onClick={() => setResultCount('all')}
               className={`rounded-full px-2.5 py-1 font-semibold transition ${
-                resultCount === 'all' ? 'bg-indigo-500 text-white' : 'border border-white/10 bg-white/5 hover:bg-white/10'
+                resultCount === 'all' ? 'bg-primary-500 text-white' : 'border border-white/10 bg-white/5 hover:bg-white/10'
               }`}
             >
               {t('showAll')}
@@ -492,8 +492,8 @@ export default function Find() {
             ))}
           </div>
           {ineligible.length > 0 && eligible.length > 0 && (
-            <details className="text-sm text-slate-400">
-              <summary className="cursor-pointer select-none font-semibold text-slate-300">
+            <details className="text-sm text-ink-400">
+              <summary className="cursor-pointer select-none font-semibold text-ink-300">
                 {t('moreIneligible', { count: ineligible.length })}
               </summary>
               <div className="mt-3 flex flex-col gap-3">

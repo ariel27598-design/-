@@ -43,11 +43,11 @@ export default function Library() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-white">{t('libraryTitle')}</h1>
-          <p className="text-sm text-slate-400">{t('librarySubtitle', { total: games.length, onShelf: ownedCount })}</p>
+          <p className="text-sm text-ink-400">{t('librarySubtitle', { total: games.length, onShelf: ownedCount })}</p>
         </div>
         <Link
           to="/games/new"
-          className="rounded-full bg-indigo-500 px-4 py-2 text-sm font-bold text-white hover:bg-indigo-400"
+          className="rounded-full bg-primary-500 px-4 py-2 text-sm font-bold text-white hover:bg-primary-400"
         >
           {t('addGameCta')}
         </Link>
@@ -55,13 +55,13 @@ export default function Library() {
 
       {libraries.length > 0 && (
         <div className="flex flex-col gap-2 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-          <span className="text-sm font-semibold text-slate-200">{t('myLibrariesTitle')}</span>
+          <span className="text-sm font-semibold text-ink-200">{t('myLibrariesTitle')}</span>
           <div className="flex flex-wrap gap-2">
             {libraries.map((lib) => (
               <button
                 key={lib.id}
                 onClick={() => navigate('/find', { state: { libraryId: lib.id } })}
-                className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:bg-white/10"
+                className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-ink-300 transition hover:bg-white/10"
               >
                 🎯 {lib.name} · {t('libraryGamesCount', { count: lib.gameIds.length })}
               </button>
@@ -74,7 +74,7 @@ export default function Library() {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder={t('searchByName')}
-        className="w-full rounded-full border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-slate-500 focus:border-indigo-400 focus:outline-none"
+        className="w-full rounded-full border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-ink-500 focus:border-primary-400 focus:outline-none"
       />
 
       <div className="flex flex-wrap gap-2">
@@ -90,8 +90,8 @@ export default function Library() {
             onClick={() => setOwnedFilter(value)}
             className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
               ownedFilter === value
-                ? 'bg-indigo-500 text-white'
-                : 'border border-white/10 bg-white/5 text-slate-300 hover:bg-white/10'
+                ? 'bg-primary-500 text-white'
+                : 'border border-white/10 bg-white/5 text-ink-300 hover:bg-white/10'
             }`}
           >
             {label}
@@ -101,8 +101,8 @@ export default function Library() {
           onClick={() => setCooperativeOnly((v) => !v)}
           className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
             cooperativeOnly
-              ? 'bg-indigo-500 text-white'
-              : 'border border-white/10 bg-white/5 text-slate-300 hover:bg-white/10'
+              ? 'bg-primary-500 text-white'
+              : 'border border-white/10 bg-white/5 text-ink-300 hover:bg-white/10'
           }`}
         >
           {t('filterCooperativeOnly')}
@@ -121,7 +121,7 @@ export default function Library() {
       </div>
 
       {filtered.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-white/15 p-10 text-center text-slate-400">
+        <div className="rounded-2xl border border-dashed border-white/15 p-10 text-center text-ink-400">
           {t('noGamesFound')}
         </div>
       ) : (

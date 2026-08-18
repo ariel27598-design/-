@@ -83,7 +83,7 @@ export default function GameForm({ mode }: Props) {
 
   if (mode === 'edit' && !existing) {
     return (
-      <div className="rounded-2xl border border-dashed border-white/15 p-10 text-center text-slate-400">
+      <div className="rounded-2xl border border-dashed border-white/15 p-10 text-center text-ink-400">
         {t('gameNotFound')}
       </div>
     );
@@ -208,12 +208,12 @@ export default function GameForm({ mode }: Props) {
         <button
           type="button"
           onClick={() => navigate(mode === 'edit' && existing ? `/games/${existing.id}` : '/library')}
-          className="mb-1 text-xs font-semibold text-indigo-300 hover:text-indigo-200"
+          className="mb-1 text-xs font-semibold text-primary-300 hover:text-primary-200"
         >
           {t('backBtn')}
         </button>
         <h1 className="text-2xl font-bold text-white">{mode === 'edit' ? t('editGameTitle') : t('addGameTitle')}</h1>
-        <p className="text-sm text-slate-400">{t('addGameSubtitle')}</p>
+        <p className="text-sm text-ink-400">{t('addGameSubtitle')}</p>
       </div>
 
       <Section title={t('basicDetails')}>
@@ -239,7 +239,7 @@ export default function GameForm({ mode }: Props) {
                 {t('scanBoxPhotoBtn')}
                 <input type="file" accept="image/*" capture="environment" onChange={handleBoxPhoto} className="hidden" />
               </label>
-              {coverOcrStatus === 'recognizing' && <span className="text-xs text-slate-400">{t('ocrRecognizing')}</span>}
+              {coverOcrStatus === 'recognizing' && <span className="text-xs text-ink-400">{t('ocrRecognizing')}</span>}
               {coverOcrStatus === 'done' && <span className="text-xs text-emerald-300">{t('ocrDone')}</span>}
               {coverOcrStatus === 'no-text' && <span className="text-xs text-amber-300">{t('ocrNoText')}</span>}
             </div>
@@ -248,12 +248,12 @@ export default function GameForm({ mode }: Props) {
 
         <Field label={t('instructionsPhotoLabel')}>
           <div className="flex flex-col gap-2">
-            <p className="text-xs text-slate-500">{t('instructionsPhotoHint')}</p>
+            <p className="text-xs text-ink-500">{t('instructionsPhotoHint')}</p>
             <label className="btn-secondary cursor-pointer self-start text-sm">
               {t('instructionsPhotoBtn')}
               <input type="file" accept="image/*" capture="environment" onChange={handleInstructionsPhoto} className="hidden" />
             </label>
-            {instructionsOcrStatus === 'recognizing' && <span className="text-xs text-slate-400">{t('ocrRecognizing')}</span>}
+            {instructionsOcrStatus === 'recognizing' && <span className="text-xs text-ink-400">{t('ocrRecognizing')}</span>}
             {instructionsOcrStatus === 'done' && <span className="text-xs text-emerald-300">{t('ocrDone')}</span>}
             {instructionsOcrStatus === 'no-text' && <span className="text-xs text-amber-300">{t('ocrNoText')}</span>}
           </div>
@@ -271,8 +271,8 @@ export default function GameForm({ mode }: Props) {
                 placeholder={t('imageUrlPlaceholder')}
                 className="input"
               />
-              <input type="file" accept="image/*" onChange={handleImageFile} className="text-xs text-slate-400" />
-              <span className="text-xs text-indigo-300/80">📷 {t('imageUploadHint')}</span>
+              <input type="file" accept="image/*" onChange={handleImageFile} className="text-xs text-ink-400" />
+              <span className="text-xs text-primary-300/80">📷 {t('imageUploadHint')}</span>
             </div>
           </div>
         </Field>
@@ -297,12 +297,12 @@ export default function GameForm({ mode }: Props) {
         </Field>
 
         <Field label="">
-          <label className="flex items-center gap-2 text-sm text-slate-200">
+          <label className="flex items-center gap-2 text-sm text-ink-200">
             <input
               type="checkbox"
               checked={form.owned}
               onChange={(e) => set('owned', e.target.checked)}
-              className="h-4 w-4 accent-indigo-500"
+              className="h-4 w-4 accent-primary-500"
             />
             {t('onShelfCheckbox')}
           </label>
@@ -335,9 +335,9 @@ export default function GameForm({ mode }: Props) {
             max={5}
             value={form.weight}
             onChange={(e) => set('weight', Number(e.target.value))}
-            className="w-full accent-indigo-500"
+            className="w-full accent-primary-500"
           />
-          <div className="flex justify-between text-xs text-slate-500">
+          <div className="flex justify-between text-xs text-ink-500">
             <span>{t('complexityLightShort')}</span>
             <span>{t('complexityHeavyShort')}</span>
           </div>
@@ -350,21 +350,21 @@ export default function GameForm({ mode }: Props) {
             max={5}
             value={form.luckVsStrategy}
             onChange={(e) => set('luckVsStrategy', Number(e.target.value))}
-            className="w-full accent-indigo-500"
+            className="w-full accent-primary-500"
           />
-          <div className="flex justify-between text-xs text-slate-500">
+          <div className="flex justify-between text-xs text-ink-500">
             <span>{t('luckShort')}</span>
             <span>{t('strategyShort')}</span>
           </div>
         </Field>
 
         <Field label="">
-          <label className="flex items-center gap-2 text-sm text-slate-200">
+          <label className="flex items-center gap-2 text-sm text-ink-200">
             <input
               type="checkbox"
               checked={form.cooperative}
               onChange={(e) => set('cooperative', e.target.checked)}
-              className="h-4 w-4 accent-indigo-500"
+              className="h-4 w-4 accent-primary-500"
             />
             {t('cooperativeCheckbox')}
           </label>
@@ -380,7 +380,7 @@ export default function GameForm({ mode }: Props) {
       </Section>
 
       <div className="flex gap-3">
-        <button type="submit" className="flex-1 rounded-full bg-indigo-500 py-3 text-sm font-bold text-white hover:bg-indigo-400">
+        <button type="submit" className="flex-1 rounded-full bg-primary-500 py-3 text-sm font-bold text-white hover:bg-primary-400">
           {mode === 'edit' ? t('saveChanges') : t('addToLibrary')}
         </button>
         {mode === 'edit' && (
@@ -400,7 +400,7 @@ export default function GameForm({ mode }: Props) {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 sm:p-5">
-      <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-indigo-300">{title}</h2>
+      <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-primary-300">{title}</h2>
       <div className="flex flex-col gap-4">{children}</div>
     </div>
   );
@@ -409,7 +409,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="flex flex-col gap-1.5">
-      {label && <span className="text-sm font-medium text-slate-300">{label}</span>}
+      {label && <span className="text-sm font-medium text-ink-300">{label}</span>}
       {children}
     </label>
   );

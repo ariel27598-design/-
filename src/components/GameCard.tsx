@@ -31,14 +31,14 @@ export default function GameCard({
   const content = (
     <>
       {typeof rank === 'number' && (
-        <div className="absolute -right-2 -top-2 flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-indigo-400 to-fuchsia-500 text-xs font-bold text-white shadow-lg">
+        <div className="absolute -right-2 -top-2 flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-primary-400 to-accent-500 text-xs font-bold text-white shadow-lg">
           {rank}
         </div>
       )}
       {selectable && (
         <div
           className={`absolute -left-2 -top-2 flex h-7 w-7 items-center justify-center rounded-full border-2 text-sm font-bold shadow-lg ${
-            selected ? 'border-emerald-400 bg-emerald-500 text-white' : 'border-white/30 bg-slate-900 text-transparent'
+            selected ? 'border-emerald-400 bg-emerald-500 text-white' : 'border-white/30 bg-ink-900 text-transparent'
           }`}
         >
           ✓
@@ -58,7 +58,7 @@ export default function GameCard({
             </span>
           )}
         </div>
-        <div className="flex flex-wrap items-center gap-1.5 text-xs text-slate-400">
+        <div className="flex flex-wrap items-center gap-1.5 text-xs text-ink-400">
           <span>
             👥 {game.minPlayers}
             {game.maxPlayers !== game.minPlayers ? `–${game.maxPlayers}` : ''}
@@ -69,7 +69,7 @@ export default function GameCard({
           {!selectable && (
             <span
               className={`rounded-full px-1.5 py-0.5 ${
-                game.owned ? 'bg-emerald-500/15 text-emerald-300' : 'bg-slate-500/15 text-slate-400'
+                game.owned ? 'bg-emerald-500/15 text-emerald-300' : 'bg-ink-500/15 text-ink-400'
               }`}
             >
               {game.owned ? t('onShelf') : t('notOnShelf')}
@@ -77,7 +77,7 @@ export default function GameCard({
           )}
         </div>
         {reasons && reasons.length > 0 ? (
-          <ul className="mt-0.5 space-y-0.5 text-xs text-indigo-200/80">
+          <ul className="mt-0.5 space-y-0.5 text-xs text-primary-200/80">
             {reasons.map((r, i) => (
               <li key={i}>✓ {renderReason(r, { t, tCategory })}</li>
             ))}
@@ -99,7 +99,7 @@ export default function GameCard({
       ? selected
         ? 'border-emerald-400/60 bg-emerald-500/10'
         : 'border-white/10 bg-white/[0.04] hover:border-white/20'
-      : `border-white/10 bg-white/[0.04] hover:border-indigo-400/40 hover:bg-white/[0.07] ${eligible ? '' : 'opacity-60'}`
+      : `border-white/10 bg-white/[0.04] hover:border-primary-400/40 hover:bg-white/[0.07] ${eligible ? '' : 'opacity-60'}`
   }`;
 
   if (selectable) {

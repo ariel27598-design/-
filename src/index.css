@@ -2,6 +2,29 @@
 
 @theme {
   --font-sans: 'Heebo', 'Segoe UI', system-ui, sans-serif;
+
+  /* Lavender - primary brand accent */
+  --color-primary-200: #ddd5fa;
+  --color-primary-300: #c7bdf6;
+  --color-primary-400: #b6a8f4;
+  --color-primary-500: #a99bf0;
+  --color-primary-600: #8f7dd6;
+
+  /* Peach - secondary brand accent */
+  --color-accent-200: #fbe0cc;
+  --color-accent-300: #f5c7a8;
+  --color-accent-400: #f2bb98;
+  --color-accent-500: #f0b088;
+  --color-accent-600: #d99568;
+
+  /* Warm-purple-tinted neutrals, replacing the cold slate scale */
+  --color-ink-100: #ece9f5;
+  --color-ink-200: #dad5ea;
+  --color-ink-300: #beb8d2;
+  --color-ink-400: #a29fb8;
+  --color-ink-500: #837f9c;
+  --color-ink-900: #211f2b;
+  --color-ink-950: #17151d;
 }
 
 html {
@@ -9,7 +32,7 @@ html {
 }
 
 body {
-  background: radial-gradient(ellipse at top, #1e1b4b 0%, #0f172a 55%, #0b1020 100%);
+  background: radial-gradient(ellipse at top, #2a2438 0%, #1b1a24 55%, #141219 100%);
   min-height: 100vh;
 }
 
@@ -21,7 +44,7 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #4c1d95;
+  background: #6e5cc4;
   border-radius: 999px;
 }
 
@@ -31,7 +54,7 @@ body {
 
 @layer components {
   .input {
-    @apply w-full rounded-xl border border-white/10 bg-white/5 px-3.5 py-2.5 text-sm text-white placeholder:text-slate-500 focus:border-indigo-400 focus:outline-none;
+    @apply w-full rounded-xl border border-white/10 bg-white/5 px-3.5 py-2.5 text-sm text-white placeholder:text-ink-500 focus:border-primary-400 focus:outline-none;
   }
   .btn-secondary {
     @apply rounded-xl border border-white/15 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10;

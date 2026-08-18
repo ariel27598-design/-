@@ -11,11 +11,11 @@ export default function Home() {
 
   return (
     <div className="flex flex-col gap-8">
-      <section className="overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-indigo-600/20 via-fuchsia-600/10 to-transparent p-6 sm:p-10">
+      <section className="overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-primary-600/20 via-accent-600/10 to-transparent p-6 sm:p-10">
         <h1 className="mb-5 text-3xl font-extrabold leading-tight text-white sm:text-4xl">{t('heroTitle')}</h1>
         <Link
           to="/find"
-          className="inline-block rounded-full bg-indigo-500 px-6 py-3 text-base font-bold text-white shadow-lg shadow-indigo-500/30 transition hover:scale-[1.02]"
+          className="inline-block rounded-full bg-primary-500 px-6 py-3 text-base font-bold text-white shadow-lg shadow-primary-500/30 transition hover:scale-[1.02]"
         >
           {t('findGameCta')}
         </Link>
@@ -29,7 +29,7 @@ export default function Home() {
       <section>
         <div className="mb-3 flex items-center justify-between">
           <h2 className="text-lg font-bold text-white">{t('recentlyAdded')}</h2>
-          <Link to="/library" className="text-sm font-medium text-indigo-300 hover:text-indigo-200">
+          <Link to="/library" className="text-sm font-medium text-primary-300 hover:text-primary-200">
             {t('viewAllLibrary')}
           </Link>
         </div>
@@ -48,7 +48,7 @@ function StatCard({ label, value, icon }: { label: string; value: number; icon: 
     <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-center">
       <div className="mb-1 text-2xl">{icon}</div>
       <div className="text-xl font-extrabold text-white">{value}</div>
-      <div className="text-xs text-slate-400">{label}</div>
+      <div className="text-xs text-ink-400">{label}</div>
     </div>
   );
 }

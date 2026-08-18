@@ -12,7 +12,7 @@ export const dict = {
   navLibrary: { he: 'ספרייה', en: 'Library' },
 
   // Home
-  heroTitle: { he: 'בוחרים אילו משחקים יש, עונים על שאלון קצר, ומקבלים המלצה', en: 'Pick what games you have, answer a short quiz, get a match' },
+  heroTitle: { he: 'החיבור המושלם בין הקבוצה שלכם למשחק', en: 'The perfect connection between your group and a game' },
   findGameCta: { he: '🔍 מצאו לי משחק', en: '🔍 Find me a game' },
   addGameCta: { he: '➕ הוספת משחק', en: '➕ Add a game' },
   statTotalGames: { he: 'סה״כ משחקים', en: 'Total games' },

@@ -9,8 +9,6 @@ interface Props {
   requireName: boolean;
   submitLabel: string;
   defaultAnswers?: QuestionnaireAnswers;
-  onBack?: () => void;
-  backLabel?: string;
   onSubmit: (answers: QuestionnaireAnswers) => void;
 }
 
@@ -19,8 +17,6 @@ export default function QuestionnaireForm({
   requireName,
   submitLabel,
   defaultAnswers,
-  onBack,
-  backLabel,
   onSubmit,
 }: Props) {
   const { t, tCategory } = useT();
@@ -133,16 +129,9 @@ export default function QuestionnaireForm({
         </div>
       </Question>
 
-      <div className="flex gap-3">
-        {onBack && (
-          <button type="button" onClick={onBack} className="btn-secondary shrink-0">
-            {backLabel}
-          </button>
-        )}
-        <button type="submit" className="flex-1 rounded-full bg-primary-500 py-3 text-sm font-bold text-white hover:bg-primary-400">
-          {submitLabel}
-        </button>
-      </div>
+      <button type="submit" className="rounded-full bg-primary-500 py-3 text-sm font-bold text-white hover:bg-primary-400">
+        {submitLabel}
+      </button>
     </form>
   );
 }

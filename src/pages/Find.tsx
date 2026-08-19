@@ -417,21 +417,24 @@ export default function Find() {
     const currentIndex = viewIndex;
     return (
       <div className="mx-auto flex max-w-lg flex-col gap-5">
-        {mode === 'group' && (
-          <div className="flex items-center justify-between text-sm text-ink-400">
-            <span>{t('playerOf', { current: currentIndex + 1, total: playerCount })}</span>
-            <div className="h-1.5 w-32 overflow-hidden rounded-full bg-white/10">
-              <div className="h-full bg-primary-500 transition-all" style={{ width: `${(currentIndex / playerCount) * 100}%` }} />
+        <div>
+          <button onClick={handleQuestionsBack} className="mb-1 text-xs font-semibold text-primary-300 hover:text-primary-200">
+            {currentIndex > 0 ? t('previousPlayer') : t('backBtn')}
+          </button>
+          {mode === 'group' && (
+            <div className="flex items-center justify-between text-sm text-ink-400">
+              <span>{t('playerOf', { current: currentIndex + 1, total: playerCount })}</span>
+              <div className="h-1.5 w-32 overflow-hidden rounded-full bg-white/10">
+                <div className="h-full bg-primary-500 transition-all" style={{ width: `${(currentIndex / playerCount) * 100}%` }} />
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
         <QuestionnaireForm
           key={currentIndex}
           defaultName={mode === 'group' ? t('playerDefaultName', { n: currentIndex + 1 }) : t('meDefaultName')}
           requireName={mode === 'group'}
           defaultAnswers={answersList[currentIndex]}
-          onBack={handleQuestionsBack}
-          backLabel={currentIndex > 0 ? t('previousPlayer') : t('backBtn')}
           submitLabel={mode === 'group' && currentIndex + 1 < playerCount ? t('nextPlayer') : t('findMyGame')}
           onSubmit={handleQuestionSubmit}
         />

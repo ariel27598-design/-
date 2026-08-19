@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { useGameStore } from '../store/useGameStore';
 import { useLibraryStore, type GameLibrary } from '../store/useLibraryStore';
+import { useLanguageStore } from '../store/useLanguageStore';
 import { useT } from '../i18n/useT';
 import type { GameMatchResult, QuestionnaireAnswers } from '../types';
 import { rankGames, rankGamesForGroup, type GroupConstraints } from '../lib/matching';
@@ -17,7 +18,7 @@ type Step = 'setup' | 'shelf' | 'questions' | 'results';
 const RESULT_COUNT_OPTIONS = [3, 5, 10] as const;
 
 export default function Find() {
-  const { t } = useT();
+  const { t, lang } = useT();
   const games = useGameStore((s) => s.games);
   const setOwnedMany = useGameStore((s) => s.setOwnedMany);
   const libraries = useLibraryStore((s) => s.libraries);
@@ -44,6 +45,7 @@ export default function Find() {
   const [results, setResults] = useState<GameMatchResult[]>([]);
   const [resultCount, setResultCount] = useState<number | 'all'>(5);
   const [searchParams, setSearchParams] = useSearchParams();
+  const setLang = useLanguageStore((s) => s.setLang);
 
   function applyLibrary(lib: GameLibrary) {
     const existingIds = new Set(games.map((g) => g.id));
@@ -52,22 +54,33 @@ export default function Find() {
   }
 
   // Import a shared library from the "lib" query param, if this link was opened from one.
+  // A "lang" param on the same link (e.g. from a poster's QR code) switches the app's
+  // language before anything else renders.
   useEffect(() => {
+    const lang = searchParams.get('lang');
+    if (lang === 'he' || lang === 'en') setLang(lang);
+
     const encoded = searchParams.get('lib');
-    if (!encoded) return;
-    const shared = decodeLibraryPayload(encoded);
-    if (!shared) return;
-    const existingIds = new Set(games.map((g) => g.id));
-    const validIds = shared.gameIds.filter((id) => existingIds.has(id));
-    const lib = importLibrary(shared.name, validIds);
-    setSelectedIds(new Set(validIds));
-    setActiveLibraryId(lib.id);
-    setSharedBanner({ name: shared.name, count: validIds.length });
-    setSearchParams((prev) => {
-      const next = new URLSearchParams(prev);
-      next.delete('lib');
-      return next;
-    });
+    if (encoded) {
+      const shared = decodeLibraryPayload(encoded);
+      if (shared) {
+        const existingIds = new Set(games.map((g) => g.id));
+        const validIds = shared.gameIds.filter((id) => existingIds.has(id));
+        const lib = importLibrary(shared.name, validIds);
+        setSelectedIds(new Set(validIds));
+        setActiveLibraryId(lib.id);
+        setSharedBanner({ name: shared.name, count: validIds.length });
+      }
+    }
+
+    if (lang || encoded) {
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        next.delete('lib');
+        next.delete('lang');
+        return next;
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -114,7 +127,7 @@ export default function Find() {
     const lib = saveLibrary(name, ids);
     setActiveLibraryId(lib.id);
     setSavingLibraryName(null);
-    setShareModal({ name, url: buildLibraryShareUrl(name, ids) });
+    setShareModal({ name, url: buildLibraryShareUrl(name, ids, lang) });
     setCloudSaveStatus('saving');
     const result = await saveLibraryToCloud(name, ids);
     setCloudSaveStatus(result.ok ? 'ok' : 'unavailable');

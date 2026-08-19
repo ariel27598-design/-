@@ -34,8 +34,9 @@ export function decodeLibraryPayload(encoded: string): { name: string; gameIds: 
   }
 }
 
-export function buildLibraryShareUrl(name: string, gameIds: string[]): string {
+export function buildLibraryShareUrl(name: string, gameIds: string[], lang?: 'he' | 'en'): string {
   const encoded = encodeLibraryPayload(name, gameIds);
   const base = window.location.href.split('#')[0];
-  return `${base}#/find?lib=${encoded}`;
+  const langParam = lang ? `&lang=${lang}` : '';
+  return `${base}#/find?lib=${encoded}${langParam}`;
 }

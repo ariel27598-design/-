@@ -19,12 +19,13 @@ jobs:
           (async () => {
             const { chromium } = require('playwright');
             const browser = await chromium.launch();
-            const page = await browser.newPage();
             const results = {};
             for (const [key, url] of Object.entries({
               he: 'https://ariel27598-design.github.io/-/#/find?libId=young-judaea',
               en: 'https://ariel27598-design.github.io/-/#/find?libId=young-judaea&lang=en',
             })) {
+              const context = await browser.newContext();
+              const page = await context.newPage();
               await page.goto(url, { waitUntil: 'networkidle' });
               await page.waitForTimeout(1500);
               const bodyText = await page.textContent('body');
@@ -34,6 +35,7 @@ jobs:
                 has8: bodyText.includes('8'),
                 snippet: bodyText.slice(0, 500),
               };
+              await context.close();
             }
             console.log(JSON.stringify(results, null, 2));
             await browser.close();

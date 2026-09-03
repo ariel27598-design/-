@@ -1,6 +1,8 @@
 name: _tmp-verify-libid
 on:
-  workflow_dispatch:
+  push:
+    branches: [claude/boardgame-barcode-scanner-9zh92l]
+    paths: ['.github/workflows/_tmp-verify-libid.yml']
 
 jobs:
   verify:

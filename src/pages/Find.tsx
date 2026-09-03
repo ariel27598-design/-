@@ -53,30 +53,45 @@ export default function Find() {
     setActiveLibraryId(lib.id);
   }
 
-  // Import a shared library from the "lib" query param, if this link was opened from one.
-  // A "lang" param on the same link (e.g. from a poster's QR code) switches the app's
-  // language before anything else renders.
+  // Import a shared library from the "lib" query param (an inline base64 payload,
+  // for ad-hoc in-app shares) or the "libId" param (a stable id pointing at a
+  // maintained JSON file in public/libraries/, for posters whose QR code should
+  // keep working after the library's game list changes). A "lang" param on the
+  // same link switches the app's language before anything else renders.
   useEffect(() => {
     const lang = searchParams.get('lang');
+    const effectiveLang = lang === 'he' || lang === 'en' ? lang : useLanguageStore.getState().lang;
     if (lang === 'he' || lang === 'en') setLang(lang);
 
     const encoded = searchParams.get('lib');
-    if (encoded) {
-      const shared = decodeLibraryPayload(encoded);
-      if (shared) {
-        const existingIds = new Set(games.map((g) => g.id));
-        const validIds = shared.gameIds.filter((id) => existingIds.has(id));
-        const lib = importLibrary(shared.name, validIds);
-        setSelectedIds(new Set(validIds));
-        setActiveLibraryId(lib.id);
-        setSharedBanner({ name: shared.name, count: validIds.length });
-      }
+    const libId = searchParams.get('libId');
+
+    function applyShared(name: string, gameIds: string[]) {
+      const existingIds = new Set(games.map((g) => g.id));
+      const validIds = gameIds.filter((id) => existingIds.has(id));
+      const lib = importLibrary(name, validIds);
+      setSelectedIds(new Set(validIds));
+      setActiveLibraryId(lib.id);
+      setSharedBanner({ name, count: validIds.length });
     }
 
-    if (lang || encoded) {
+    if (encoded) {
+      const shared = decodeLibraryPayload(encoded);
+      if (shared) applyShared(shared.name, shared.gameIds);
+    } else if (libId) {
+      fetch(`${import.meta.env.BASE_URL}libraries/${libId}.json`)
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data: { name: { he: string; en: string }; gameIds: string[] } | null) => {
+          if (data) applyShared(data.name[effectiveLang], data.gameIds);
+        })
+        .catch(() => {});
+    }
+
+    if (lang || encoded || libId) {
       setSearchParams((prev) => {
         const next = new URLSearchParams(prev);
         next.delete('lib');
+        next.delete('libId');
         next.delete('lang');
         return next;
       });
